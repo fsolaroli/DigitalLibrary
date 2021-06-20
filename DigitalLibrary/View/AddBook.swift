@@ -20,6 +20,7 @@ struct AddBook: View {
     @ObservedObject var shelf: Shelf
     
     @State var showCodebarScanner = false
+    @State var showCoverScanner = false
     @State var torchIsOn = false
     
     @State var ISBN = ""
@@ -80,11 +81,25 @@ struct AddBook: View {
                         
                 }.edgesIgnoringSafeArea([.bottom])
                 
-            }.hidden(!showCodebarScanner)
+            }.hidden(!showCodebarScanner && showCoverScanner)
+            ScannerCoverView { result in
+                switch result {
+                    case .success(let scannedImages):
+                        cover = Image(uiImage: scannedImages[0])
+                        
+                    case .failure(let error):
+                        print(error.localizedDescription)
+                }
+                
+                showCoverScanner = false
+            } didCancelScanning: {
+                showCoverScanner = false
+            }.hidden(!showCoverScanner && showCodebarScanner)
             NavigationView {
                 Form {
                     Section(header: Text("Copertina"), content: {
-                        cover
+                        cover.resizable().scaledToFit()
+                        Button(action: { showCoverScanner = true }, label: {Text("Scansione Copertina")})
                     })
                     Section(header: Text("Dati Libro"), content: {
                         TextField("Titolo", text: $title)
@@ -125,7 +140,7 @@ struct AddBook: View {
                         )
                     }
                 )).padding(.top)
-            }.hidden(showCodebarScanner)
+            }.hidden(showCodebarScanner && showCoverScanner)
         }
     }
 }
