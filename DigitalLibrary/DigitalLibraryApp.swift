@@ -13,7 +13,7 @@ struct DigitalLibraryApp: App {
 
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            BookLibraryListView(viewModel: ManageData())
                 .environment(\.managedObjectContext, persistenceController.container.viewContext)
         }
     }

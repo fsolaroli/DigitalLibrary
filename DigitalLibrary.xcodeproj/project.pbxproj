@@ -3,27 +3,48 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
 		E5467D8A267E15C600EA89BD /* DigitalLibraryApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5467D89267E15C600EA89BD /* DigitalLibraryApp.swift */; };
-		E5467D8C267E15C600EA89BD /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5467D8B267E15C600EA89BD /* ContentView.swift */; };
-		E5467D8E267E15C600EA89BD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E5467D8D267E15C600EA89BD /* Assets.xcassets */; };
 		E5467D91267E15C600EA89BD /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E5467D90267E15C600EA89BD /* Preview Assets.xcassets */; };
 		E5467D93267E15C600EA89BD /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5467D92267E15C600EA89BD /* Persistence.swift */; };
-		E5467D96267E15C600EA89BD /* DigitalLibrary.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = E5467D94267E15C600EA89BD /* DigitalLibrary.xcdatamodeld */; };
+		E5467DAD267E167200EA89BD /* DigitalLibrary.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = E5467D9E267E15F700EA89BD /* DigitalLibrary.xcdatamodeld */; };
+		E5467DB0267E1B7800EA89BD /* BookLibraryListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5467DAF267E1B7800EA89BD /* BookLibraryListView.swift */; };
+		E5467DB2267E1CCB00EA89BD /* ManageData.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5467DB1267E1CCB00EA89BD /* ManageData.swift */; };
+		E5467DB4267E22F500EA89BD /* ShelfListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5467DB3267E22F500EA89BD /* ShelfListView.swift */; };
+		E5467DC2267E28EB00EA89BD /* AddBookshelf.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5467DC1267E28EB00EA89BD /* AddBookshelf.swift */; };
+		E5FD3608267E593500693351 /* ShelfView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5FD3607267E593500693351 /* ShelfView.swift */; };
+		E5FD360A267E5DE700693351 /* AddShelf.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5FD3609267E5DE700693351 /* AddShelf.swift */; };
+		E5FD360C267E665B00693351 /* BookView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5FD360B267E665B00693351 /* BookView.swift */; };
+		E5FD3612267F791C00693351 /* ScannerCoverView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5FD3611267F791C00693351 /* ScannerCoverView.swift */; };
+		E5FD3615267F7DDC00693351 /* CarBode in Frameworks */ = {isa = PBXBuildFile; productRef = E5FD3614267F7DDC00693351 /* CarBode */; };
+		E5FD3617267F7E2500693351 /* AddBook.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5FD3616267F7E2500693351 /* AddBook.swift */; };
+		E5FD3619267F800000693351 /* View+hidden.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5FD3618267F800000693351 /* View+hidden.swift */; };
+		E5FD361B267FAED300693351 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E5FD361A267FAED300693351 /* Assets.xcassets */; };
+		E5FD361D267FB9F800693351 /* UIApplication+endEditing.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5FD361C267FB9F800693351 /* UIApplication+endEditing.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		E5467D86267E15C600EA89BD /* DigitalLibrary.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DigitalLibrary.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E5467D89267E15C600EA89BD /* DigitalLibraryApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DigitalLibraryApp.swift; sourceTree = "<group>"; };
-		E5467D8B267E15C600EA89BD /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
-		E5467D8D267E15C600EA89BD /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		E5467D90267E15C600EA89BD /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		E5467D92267E15C600EA89BD /* Persistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Persistence.swift; sourceTree = "<group>"; };
-		E5467D95267E15C600EA89BD /* DigitalLibrary.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = DigitalLibrary.xcdatamodel; sourceTree = "<group>"; };
 		E5467D97267E15C600EA89BD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		E5467D9F267E15F700EA89BD /* Digital_Library.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Digital_Library.xcdatamodel; sourceTree = "<group>"; };
+		E5467DAF267E1B7800EA89BD /* BookLibraryListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookLibraryListView.swift; sourceTree = "<group>"; };
+		E5467DB1267E1CCB00EA89BD /* ManageData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageData.swift; sourceTree = "<group>"; };
+		E5467DB3267E22F500EA89BD /* ShelfListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShelfListView.swift; sourceTree = "<group>"; };
+		E5467DC1267E28EB00EA89BD /* AddBookshelf.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddBookshelf.swift; sourceTree = "<group>"; };
+		E5FD3607267E593500693351 /* ShelfView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShelfView.swift; sourceTree = "<group>"; };
+		E5FD3609267E5DE700693351 /* AddShelf.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddShelf.swift; sourceTree = "<group>"; };
+		E5FD360B267E665B00693351 /* BookView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookView.swift; sourceTree = "<group>"; };
+		E5FD3611267F791C00693351 /* ScannerCoverView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScannerCoverView.swift; sourceTree = "<group>"; };
+		E5FD3616267F7E2500693351 /* AddBook.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddBook.swift; sourceTree = "<group>"; };
+		E5FD3618267F800000693351 /* View+hidden.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+hidden.swift"; sourceTree = "<group>"; };
+		E5FD361A267FAED300693351 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = ../../../../../../../../../.Trash/AppIcons/Assets.xcassets; sourceTree = "<group>"; };
+		E5FD361C267FB9F800693351 /* UIApplication+endEditing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIApplication+endEditing.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -31,6 +52,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E5FD3615267F7DDC00693351 /* CarBode in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -57,11 +79,12 @@
 			isa = PBXGroup;
 			children = (
 				E5467D89267E15C600EA89BD /* DigitalLibraryApp.swift */,
-				E5467D8B267E15C600EA89BD /* ContentView.swift */,
-				E5467D8D267E15C600EA89BD /* Assets.xcassets */,
+				E5467DAE267E188A00EA89BD /* View */,
+				E5467DB1267E1CCB00EA89BD /* ManageData.swift */,
 				E5467D92267E15C600EA89BD /* Persistence.swift */,
+				E5467D9E267E15F700EA89BD /* DigitalLibrary.xcdatamodeld */,
+				E5FD361A267FAED300693351 /* Assets.xcassets */,
 				E5467D97267E15C600EA89BD /* Info.plist */,
-				E5467D94267E15C600EA89BD /* DigitalLibrary.xcdatamodeld */,
 				E5467D8F267E15C600EA89BD /* Preview Content */,
 			);
 			path = DigitalLibrary;
@@ -73,6 +96,31 @@
 				E5467D90267E15C600EA89BD /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		E5467DAE267E188A00EA89BD /* View */ = {
+			isa = PBXGroup;
+			children = (
+				E5467DAF267E1B7800EA89BD /* BookLibraryListView.swift */,
+				E5467DC1267E28EB00EA89BD /* AddBookshelf.swift */,
+				E5467DB3267E22F500EA89BD /* ShelfListView.swift */,
+				E5FD3607267E593500693351 /* ShelfView.swift */,
+				E5FD3609267E5DE700693351 /* AddShelf.swift */,
+				E5FD3616267F7E2500693351 /* AddBook.swift */,
+				E5FD360B267E665B00693351 /* BookView.swift */,
+				E5FD3611267F791C00693351 /* ScannerCoverView.swift */,
+				E5FD361E267FBC9600693351 /* Extensions */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		E5FD361E267FBC9600693351 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				E5FD361C267FB9F800693351 /* UIApplication+endEditing.swift */,
+				E5FD3618267F800000693351 /* View+hidden.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -91,6 +139,9 @@
 			dependencies = (
 			);
 			name = DigitalLibrary;
+			packageProductDependencies = (
+				E5FD3614267F7DDC00693351 /* CarBode */,
+			);
 			productName = DigitalLibrary;
 			productReference = E5467D86267E15C600EA89BD /* DigitalLibrary.app */;
 			productType = "com.apple.product-type.application";
@@ -118,6 +169,9 @@
 				Base,
 			);
 			mainGroup = E5467D7D267E15C500EA89BD;
+			packageReferences = (
+				E5FD3613267F7DDC00693351 /* XCRemoteSwiftPackageReference "CarBode-Barcode-Scanner-For-SwiftUI" */,
+			);
 			productRefGroup = E5467D87267E15C600EA89BD /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -133,7 +187,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E5467D91267E15C600EA89BD /* Preview Assets.xcassets in Resources */,
-				E5467D8E267E15C600EA89BD /* Assets.xcassets in Resources */,
+				E5FD361B267FAED300693351 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -145,9 +199,19 @@
 			buildActionMask = 2147483647;
 			files = (
 				E5467D93267E15C600EA89BD /* Persistence.swift in Sources */,
-				E5467D8C267E15C600EA89BD /* ContentView.swift in Sources */,
-				E5467D96267E15C600EA89BD /* DigitalLibrary.xcdatamodeld in Sources */,
+				E5FD361D267FB9F800693351 /* UIApplication+endEditing.swift in Sources */,
+				E5FD3617267F7E2500693351 /* AddBook.swift in Sources */,
+				E5467DC2267E28EB00EA89BD /* AddBookshelf.swift in Sources */,
+				E5FD3608267E593500693351 /* ShelfView.swift in Sources */,
+				E5467DB2267E1CCB00EA89BD /* ManageData.swift in Sources */,
+				E5FD3612267F791C00693351 /* ScannerCoverView.swift in Sources */,
+				E5467DAD267E167200EA89BD /* DigitalLibrary.xcdatamodeld in Sources */,
 				E5467D8A267E15C600EA89BD /* DigitalLibraryApp.swift in Sources */,
+				E5467DB4267E22F500EA89BD /* ShelfListView.swift in Sources */,
+				E5FD3619267F800000693351 /* View+hidden.swift in Sources */,
+				E5FD360A267E5DE700693351 /* AddShelf.swift in Sources */,
+				E5FD360C267E665B00693351 /* BookView.swift in Sources */,
+				E5467DB0267E1B7800EA89BD /* BookLibraryListView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -337,14 +401,34 @@
 		};
 /* End XCConfigurationList section */
 
+/* Begin XCRemoteSwiftPackageReference section */
+		E5FD3613267F7DDC00693351 /* XCRemoteSwiftPackageReference "CarBode-Barcode-Scanner-For-SwiftUI" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/heart/CarBode-Barcode-Scanner-For-SwiftUI";
+			requirement = {
+				branch = 2.1.2;
+				kind = branch;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		E5FD3614267F7DDC00693351 /* CarBode */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E5FD3613267F7DDC00693351 /* XCRemoteSwiftPackageReference "CarBode-Barcode-Scanner-For-SwiftUI" */;
+			productName = CarBode;
+		};
+/* End XCSwiftPackageProductDependency section */
+
 /* Begin XCVersionGroup section */
-		E5467D94267E15C600EA89BD /* DigitalLibrary.xcdatamodeld */ = {
+		E5467D9E267E15F700EA89BD /* DigitalLibrary.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
-				E5467D95267E15C600EA89BD /* DigitalLibrary.xcdatamodel */,
+				E5467D9F267E15F700EA89BD /* Digital_Library.xcdatamodel */,
 			);
-			currentVersion = E5467D95267E15C600EA89BD /* DigitalLibrary.xcdatamodel */;
-			path = DigitalLibrary.xcdatamodeld;
+			currentVersion = E5467D9F267E15F700EA89BD /* Digital_Library.xcdatamodel */;
+			name = DigitalLibrary.xcdatamodeld;
+			path = CoreData/DigitalLibrary.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
 		};

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="18154" systemVersion="20F71" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="Book" representedClassName="Book" syncable="YES" codeGenerationType="class">
+        <attribute name="author" optional="YES" attributeType="String"/>
+        <attribute name="borrowed" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="cover" optional="YES" attributeType="Binary"/>
+        <attribute name="edition" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="editor" optional="YES" attributeType="String"/>
+        <attribute name="isbn" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="reading" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="title" attributeType="String"/>
+        <relationship name="shelf" maxCount="1" deletionRule="Nullify" destinationEntity="Shelf" inverseName="books" inverseEntity="Shelf"/>
+    </entity>
+    <entity name="Bookshelf" representedClassName="Bookshelf" syncable="YES" codeGenerationType="class">
+        <attribute name="name" attributeType="String"/>
+        <relationship name="shelfs" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="Shelf" inverseName="bookshelf" inverseEntity="Shelf"/>
+    </entity>
+    <entity name="Shelf" representedClassName="Shelf" syncable="YES" codeGenerationType="class">
+        <attribute name="name" attributeType="String"/>
+        <relationship name="books" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="Book" inverseName="shelf" inverseEntity="Book"/>
+        <relationship name="bookshelf" maxCount="1" deletionRule="Nullify" ordered="YES" destinationEntity="Bookshelf" inverseName="shelfs" inverseEntity="Bookshelf"/>
+    </entity>
+    <elements>
+        <element name="Book" positionX="-37.0458984375" positionY="-102.78857421875" width="128" height="164"/>
+        <element name="Bookshelf" positionX="-330.301025390625" positionY="-4.58349609375" width="128" height="59"/>
+        <element name="Shelf" positionX="-183.695068359375" positionY="202.1500854492188" width="205.65087890625" height="74"/>
+    </elements>
+</model>
