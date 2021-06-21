@@ -24,6 +24,7 @@
 		E5FD3619267F800000693351 /* View+hidden.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5FD3618267F800000693351 /* View+hidden.swift */; };
 		E5FD361B267FAED300693351 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E5FD361A267FAED300693351 /* Assets.xcassets */; };
 		E5FD361D267FB9F800693351 /* UIApplication+endEditing.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5FD361C267FB9F800693351 /* UIApplication+endEditing.swift */; };
+		E5FD3622267FFB9400693351 /* BarcodeScannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5FD3621267FFB9400693351 /* BarcodeScannerView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -45,6 +46,7 @@
 		E5FD3618267F800000693351 /* View+hidden.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+hidden.swift"; sourceTree = "<group>"; };
 		E5FD361A267FAED300693351 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = ../../../../../../../../../.Trash/AppIcons/Assets.xcassets; sourceTree = "<group>"; };
 		E5FD361C267FB9F800693351 /* UIApplication+endEditing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIApplication+endEditing.swift"; sourceTree = "<group>"; };
+		E5FD3621267FFB9400693351 /* BarcodeScannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarcodeScannerView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -110,6 +112,7 @@
 				E5FD360B267E665B00693351 /* BookView.swift */,
 				E5FD3611267F791C00693351 /* ScannerCoverView.swift */,
 				E5FD361E267FBC9600693351 /* Extensions */,
+				E5FD3621267FFB9400693351 /* BarcodeScannerView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -198,6 +201,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E5FD3622267FFB9400693351 /* BarcodeScannerView.swift in Sources */,
 				E5467D93267E15C600EA89BD /* Persistence.swift in Sources */,
 				E5FD361D267FB9F800693351 /* UIApplication+endEditing.swift in Sources */,
 				E5FD3617267F7E2500693351 /* AddBook.swift in Sources */,
