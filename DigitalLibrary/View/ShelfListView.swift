@@ -13,6 +13,7 @@ struct ShelfListView: View {
     
     @Environment(\.managedObjectContext) private var viewContext
     
+//    @State private var isEditable = false
     @State var showAddShelfView = false
     
     @ObservedObject var bookshelf: Bookshelf
@@ -20,7 +21,11 @@ struct ShelfListView: View {
     var body: some View {
         List {
             ForEach(Array(bookshelf.shelfs?.set ?? []),id: \.self) { shelf in
-                ShelfView(viewModel: viewModel, shelf: shelf as! Shelf)
+//                if isEditable {
+//                    Text((shelf as! Shelf).name ?? "").font(.title2)
+//                } else {
+                    ShelfView(viewModel: viewModel, shelf: shelf as! Shelf)
+//                }
             }.onDelete(perform: { indexSet in
                 var itemsToRemove = [Shelf]()
                 for indexToRemove in indexSet {
@@ -29,7 +34,15 @@ struct ShelfListView: View {
                 
                 viewModel.delete(itemsToRemove, viewContext: viewContext)
             })
-        }.navigationTitle(bookshelf.name ?? "")
+//            .onMove(perform: move)
+//            .onLongPressGesture {
+//                withAnimation {
+//                    self.isEditable = true
+//                }
+//            }
+        }
+//        .environment(\.editMode, isEditable ? .constant(.active) : .constant(.inactive))
+        .navigationTitle(bookshelf.name ?? "")
         .listStyle(PlainListStyle())
         .navigationBarItems(trailing: Button(
             action: {
@@ -43,4 +56,11 @@ struct ShelfListView: View {
                 .environment(\.managedObjectContext, viewContext)
         })
     }
+    
+//    func move(from source: IndexSet, to destination: Int) {
+//            fruits.move(fromOffsets: source, toOffset: destination)
+//            withAnimation {
+//                isEditable = false
+//            }
+//        }
 }

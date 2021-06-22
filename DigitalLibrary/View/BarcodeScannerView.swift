@@ -11,6 +11,8 @@ import AVFoundation
 
 struct BarcodeScannerView: View {
     
+    @ObservedObject var viewModel: ManageData
+    
     @Environment(\.presentationMode) var presentationMode
     
     @State var torchIsOn = false
@@ -18,7 +20,6 @@ struct BarcodeScannerView: View {
     
     func disableAll() {
         torchIsOn = false
-        UIApplication.shared.endEditing()
         presentationMode.wrappedValue.dismiss()
     }
     
@@ -33,6 +34,7 @@ struct BarcodeScannerView: View {
                 Button(
                     action: {
                         disableAll()
+                        viewModel.getBookDataFromISBN(isbn: ISBN)
                         // TODO: search ISBN
                     },
                     label: { Text("Conferma") })
@@ -48,7 +50,6 @@ struct BarcodeScannerView: View {
                 ){ result in
                     ISBN = result.value
                 }
-//                .disabled(!showCodebarScanner && showCoverScanner)
                 
                 VStack {
                     

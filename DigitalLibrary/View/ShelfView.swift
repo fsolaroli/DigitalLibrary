@@ -13,6 +13,7 @@ struct ShelfView: View {
     
     @Environment(\.managedObjectContext) private var viewContext
     
+//    @State private var isEditable = false
     @State var showAddBook = false
     
     @ObservedObject var shelf: Shelf
@@ -20,16 +21,33 @@ struct ShelfView: View {
     var body: some View {
         VStack(alignment: .leading) {
             Text(shelf.name ?? "").font(.title2)
-            ScrollView(.horizontal) {
-                LazyHStack {
-                    ForEach(Array(shelf.books?.set ?? Set<AnyHashable>()),id: \.self) { e in
-                        let book = e as! Book
-                        NavigationLink(destination: BookView(viewModel: viewModel, book: book)) {
-                            Text(book.title!)
+//            if isEditable {
+//                List {
+//
+//                }
+                //                .environment(\.editMode, .constant(.active))
+
+//            } else {
+                ScrollView(.horizontal) {
+                    LazyHStack {
+                        ForEach(Array(shelf.books?.set ?? Set<AnyHashable>()),id: \.self) { e in
+                            let book = e as! Book
+                            NavigationLink(destination: BookView(viewModel: viewModel, book: book)) {
+                                ZStack {
+                                    if let coverData = book.cover, let coverImage = UIImage(data: coverData){
+                                        Image(uiImage: coverImage).resizable().scaledToFit()
+                                    } else {
+                                        Text(book.title ?? "").font(.title
+                                        )
+                                        Image(systemName: "photo").resizable().scaledToFit().opacity(0.5)
+                                    }
+                                }.frame(width: 150, height: 200)
+                            }
                         }
+                        
                     }
                 }
-            }
+//            }
             HStack {
                 Spacer()
                 Button(
@@ -44,4 +62,11 @@ struct ShelfView: View {
                     .environment(\.managedObjectContext, viewContext)
             })
     }
+    
+//    func move(from source: IndexSet, to destination: Int) {
+//        fruits.move(fromOffsets: source, toOffset: destination)
+//        withAnimation {
+//            isEditable = false
+//        }
+//    }
 }
