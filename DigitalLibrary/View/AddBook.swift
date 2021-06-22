@@ -28,6 +28,10 @@ struct AddBook: View {
         showBarcodeScanner = false
     }
     
+    var alert: Alert {
+        Alert(title: Text("Nessun risultato trovato"), message: Text("L'ISBN inserito non esiste o non è presente nel database di Google Books"), dismissButton: .default(Text("OK")))
+    }
+    
     var body: some View {
         NavigationView {
             Form {
@@ -57,7 +61,9 @@ struct AddBook: View {
                         presentationMode.wrappedValue.dismiss()
                     },
                     label: { Text("Aggiungi Libro")  }
-                ).disabled(viewModel.inputBook.title == "")
+                )
+                .disabled(viewModel.inputBook.title == "")
+                
             }.navigationTitle("Aggiungi Libro")
             .navigationBarItems(trailing: Button(
                 action: { showBarcodeScanner = true },
@@ -82,6 +88,11 @@ struct AddBook: View {
                 }
             ))
         }
+        .alert(isPresented: Binding<Bool>(
+            get: { viewModel.notFound },
+            set: { viewModel.notFound = $0 }
+        ), content: { self.alert })
+        .onDisappear(perform: {viewModel.resetInputBook()})
         .sheet(isPresented: $showBarcodeScanner, content: { BarcodeScannerView(viewModel: viewModel) })
         .sheet(isPresented: $showCoverScanner, content: {
             ScannerCoverView { result in

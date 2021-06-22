@@ -15,6 +15,8 @@ class ManageData: ObservableObject {
     
     @Published var inputBook = InputBook()
     
+    @Published var notFound = false
+    
     func getBookDataFromISBN(isbn: String) {
         let session = URLSession(configuration: .default)
         if let url = URL(string: isbnBookAPI + isbn) {
@@ -22,28 +24,44 @@ class ManageData: ObservableObject {
                 DispatchQueue.main.async {
                     if let bookData = data {
                         let json = try! JSONSerialization.jsonObject(with: bookData, options: JSONSerialization.ReadingOptions.allowFragments) as! Dictionary<String, Any>
-                        let items = json["items"] as! Array<Any>
-                        let book = items[0] as! Dictionary<String, Any>
-                        let bookInfo = book["volumeInfo"] as! Dictionary<String, Any>
-                        print("BookInfo:\n \(bookInfo)")
-                        self.inputBook.title = bookInfo["title"] as? String ?? ""
-                        let authors = bookInfo["authors"] as? Array<String> ?? []
-                        self.inputBook.author = authors.joined(separator: ", ")
-                        self.inputBook.editor = bookInfo["publisher"] as? String ?? ""
-                        self.inputBook.publishDate = bookInfo["publishedDate"] as? String ?? ""
-                        self.inputBook.ISBN = isbn
-                        if let pageCount = bookInfo["pageCount"] as? Int {
-                            self.inputBook.pageNumber = String(pageCount)
+                        if let items = json["items"] as? Array<Any> {
+                            let book = items[0] as! Dictionary<String, Any>
+                            let bookInfo = book["volumeInfo"] as! Dictionary<String, Any>
+                            self.inputBook.title = bookInfo["title"] as? String ?? ""
+                            let authors = bookInfo["authors"] as? Array<String> ?? []
+                            self.inputBook.author = authors.joined(separator: ", ")
+                            self.inputBook.editor = bookInfo["publisher"] as? String ?? ""
+                            self.inputBook.publishDate = bookInfo["publishedDate"] as? String ?? ""
+                            self.inputBook.ISBN = isbn
+                            if let pageCount = bookInfo["pageCount"] as? Int {
+                                self.inputBook.pageNumber = String(pageCount)
+                            }
+                            if let imageLinks = bookInfo["imageLinks"] as? Dictionary<String, String> {
+                                var url = imageLinks["thumbnail"]!
+                                url.insert("s", at: url.index(url.startIndex, offsetBy: 4))
+                                DispatchQueue.global(qos: .background).async {
+                                    let data = try? Data(contentsOf: URL(string: url as String)!)
+                                    DispatchQueue.main.async {
+                                        if let imageData = data {
+                                            self.inputBook.cover = UIImage(data: imageData)!
+                                        }
+                                    }
+                                }
+                            }
+                        } else {
+                            self.notFound = true
                         }
-                        
-                        print("Book: \(self.inputBook)")
                     } else {
-                        print("empty response")
+                        self.notFound = true
                     }
                 }
             }
             task.resume()
         }
+    }
+    
+    func resetInputBook() {
+        self.inputBook = InputBook()
     }
     
     func addBookshelf(name: String, viewContext: NSManagedObjectContext) {

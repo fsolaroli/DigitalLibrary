@@ -35,12 +35,11 @@ struct BarcodeScannerView: View {
                     action: {
                         disableAll()
                         viewModel.getBookDataFromISBN(isbn: ISBN)
-                        // TODO: search ISBN
                     },
                     label: { Text("Conferma") })
             }.padding(.horizontal).padding(.top)
 
-            TextField("ISBN", text: $ISBN).textFieldStyle(RoundedBorderTextFieldStyle()).padding(.horizontal)
+            TextField("ISBN", text: $ISBN).textFieldStyle(RoundedBorderTextFieldStyle()).padding(.horizontal).keyboardType(.numberPad)
             
             ZStack {
                 CBScanner(
