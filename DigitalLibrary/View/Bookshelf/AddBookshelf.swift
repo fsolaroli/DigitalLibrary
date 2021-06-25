@@ -10,6 +10,7 @@ import SwiftUI
 struct AddBookshelf: View {
     
     var viewModel: ManageData
+    var nextIndex: Int
     
     @Environment(\.managedObjectContext) private var viewContext
     
@@ -24,7 +25,7 @@ struct AddBookshelf: View {
                     TextField("Nome", text: $name)
                 }
                 Button(action: {
-                    viewModel.addBookshelf(name: name, viewContext: viewContext)
+                    viewModel.addBookshelf(name: name, index: nextIndex, viewContext: viewContext)
                     presentationMode.wrappedValue.dismiss()
                 }, label: {
                     Text("Aggiungi")

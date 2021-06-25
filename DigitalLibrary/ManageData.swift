@@ -11,7 +11,18 @@ import CoreData
 
 class ManageData: ObservableObject {
     
-    let isbnBookAPI = "https://www.googleapis.com/books/v1/volumes?q=isbn:"
+    let isbnBookAPI = "https://www.googleapis.com/books/v1/volumes?q=isbn:"    
+    
+//    @Published var currentBookshelf: Bookshelf? = nil
+//    @Published var currentBook: Book? = nil
+//
+//    func setCurretBookshelf(_ bookshelf: Bookshelf?) {
+//        currentBookshelf = bookshelf
+//    }
+//
+//    func setCurretBook(_ book: Book?) {
+//        currentBook = book
+//    }
     
     @Published var inputBook = InputBook()
     
@@ -64,10 +75,11 @@ class ManageData: ObservableObject {
         self.inputBook = InputBook()
     }
     
-    func addBookshelf(name: String, viewContext: NSManagedObjectContext) {
+    func addBookshelf(name: String, index: Int, viewContext: NSManagedObjectContext) {
         withAnimation {
             let newBookshelf = Bookshelf(context: viewContext)
             newBookshelf.name = name
+            newBookshelf.index = Int64(index)
             do {
                 try viewContext.save()
             } catch {
@@ -79,10 +91,11 @@ class ManageData: ObservableObject {
         }
     }
     
-    func addShelf(name: String, bookshelf: Bookshelf, viewContext: NSManagedObjectContext) {
+    func addShelf(name: String, index: Int, bookshelf: Bookshelf, viewContext: NSManagedObjectContext) {
         withAnimation {
             let newShelf = Shelf(context: viewContext)
             newShelf.name = name
+            newShelf.index = Int64(index)
             bookshelf.addToShelfs(newShelf)
             do {
                 try viewContext.save()
@@ -96,7 +109,7 @@ class ManageData: ObservableObject {
     }
     
     
-    func addBook(shelf: Shelf, viewContext: NSManagedObjectContext) {
+    func addBook(shelf: Shelf, index: Int, viewContext: NSManagedObjectContext) {
         withAnimation {
             let newBook = Book(context: viewContext)
             
@@ -106,6 +119,7 @@ class ManageData: ObservableObject {
             newBook.title = inputBook.title
             newBook.authors = inputBook.author
             newBook.editor = inputBook.editor
+            newBook.index = Int64(index)
             if let publishDate = Int16(inputBook.publishDate) {
                 newBook.publishDate = publishDate
             }
@@ -133,6 +147,97 @@ class ManageData: ObservableObject {
         }
     }
     
+    func move(_ array: Array<Bookshelf>, from source: Int, to destination: Int, viewContext: NSManagedObjectContext) {
+        if (source != destination) {
+            
+            array[source].index = Int64(destination - 1)
+            
+            if(source < destination) {
+                for element in array[(source + 1) ..< destination] {
+                    element.index = element.index - 1
+                }
+            } else {
+                for element in array[destination ..< source] {
+                    element.index = element.index + 1
+                }
+            }
+           
+            do {
+                try viewContext.save()
+            } catch {
+                // Replace this implementation with code to handle the error appropriately.
+                // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
+                let nsError = error as NSError
+                fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
+            }
+        }
+    }
+    
+    func move(_ array: Array<Shelf>, from source: Int, to destination: Int, viewContext: NSManagedObjectContext) {
+        if (source != destination) {
+            
+            array[source].index = Int64(destination - 1)
+            
+            if(source < destination) {
+                for element in array[(source + 1) ..< destination] {
+                    element.index = element.index - 1
+                }
+            } else {
+                for element in array[destination ..< source] {
+                    element.index = element.index + 1
+                }
+            }
+           
+            do {
+                try viewContext.save()
+            } catch {
+                // Replace this implementation with code to handle the error appropriately.
+                // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
+                let nsError = error as NSError
+                fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
+            }
+        }
+    }
+    
+    func move(_ array: Array<Book>, from source: Int, to destination: Int, viewContext: NSManagedObjectContext) {
+        if (source != destination) {
+            
+            array[source].index = Int64(destination - 1)
+            
+            if(source < destination) {
+                for element in array[(source + 1) ..< destination] {
+                    element.index = element.index - 1
+                }
+            } else {
+                for element in array[destination ..< source] {
+                    element.index = element.index + 1
+                }
+            }
+           
+            do {
+                try viewContext.save()
+            } catch {
+                // Replace this implementation with code to handle the error appropriately.
+                // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
+                let nsError = error as NSError
+                fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
+            }
+        }
+    }
+    
+    func delete<I: NSManagedObject>(_ item: I, viewContext: NSManagedObjectContext) {
+        viewContext.delete(item)
+        
+        do {
+            try viewContext.save()
+        } catch {
+            // Replace this implementation with code to handle the error appropriately.
+            // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
+            let nsError = error as NSError
+            fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
+        }
+    }
+    
     func delete<I: NSManagedObject>(_ items: [I], viewContext: NSManagedObjectContext) {
         withAnimation {
             for item in items {
@@ -150,7 +255,3 @@ class ManageData: ObservableObject {
         }
     }
 }
-
-
-
-

@@ -49,6 +49,12 @@ struct BarcodeScannerView: View {
                 ){ result in
                     ISBN = result.value
                 }
+                onDraw: {
+                    let lineWidth = 2
+                    let lineColor = UIColor.red
+                    let fillColor = UIColor(red: 0, green: 1, blue: 0.2, alpha: 0.4)
+                    $0.draw(lineWidth: CGFloat(lineWidth), lineColor: lineColor, fillColor: fillColor)
+                }
                 
                 VStack {
                     

@@ -13,7 +13,7 @@ struct DigitalLibraryApp: App {
 
     var body: some Scene {
         WindowGroup {
-            BookLibraryListView(viewModel: ManageData())
+            HomeView(viewModel: ManageData())
                 .onAppear(perform: UIApplication.shared.addTapGestureRecognizer)
                 .environment(\.managedObjectContext, persistenceController.container.viewContext)
         }
