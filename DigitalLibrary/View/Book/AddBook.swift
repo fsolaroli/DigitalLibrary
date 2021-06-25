@@ -96,15 +96,6 @@ struct AddBook: View {
                 )
                 .disabled(viewModel.inputBook.title == ""))
         }
-        .alert(
-            isPresented: Binding<Bool>(
-                get: { viewModel.notFound },
-                set: { viewModel.notFound = $0 }
-            ),
-            content: {
-                Alert(title: Text("Nessun risultato trovato"), message: Text("L'ISBN inserito non esiste o non è presente nel database di Google Books"), dismissButton: .default(Text("OK")))
-            }
-        )
         .sheet(isPresented: $showBarcodeScanner, content: { BarcodeScannerView(viewModel: viewModel) })
         .sheet(isPresented: $showCoverScanner, content: {
             ScannerCoverView { result in

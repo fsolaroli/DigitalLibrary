@@ -13,22 +13,14 @@ class ManageData: ObservableObject {
     
     let isbnBookAPI = "https://www.googleapis.com/books/v1/volumes?q=isbn:"    
     
-//    @Published var currentBookshelf: Bookshelf? = nil
-//    @Published var currentBook: Book? = nil
-//
-//    func setCurretBookshelf(_ bookshelf: Bookshelf?) {
-//        currentBookshelf = bookshelf
-//    }
-//
-//    func setCurretBook(_ book: Book?) {
-//        currentBook = book
-//    }
-    
     @Published var inputBook = InputBook()
     
     @Published var notFound = false
     
     func getBookDataFromISBN(isbn: String) {
+        notFound = false
+        self.resetInputBook()
+        self.inputBook.ISBN = isbn
         let session = URLSession(configuration: .default)
         if let url = URL(string: isbnBookAPI + isbn) {
             let task = session.dataTask(with: url) { (data: Data?, response, error) in
@@ -43,7 +35,6 @@ class ManageData: ObservableObject {
                             self.inputBook.author = authors.joined(separator: ", ")
                             self.inputBook.editor = bookInfo["publisher"] as? String ?? ""
                             self.inputBook.publishDate = bookInfo["publishedDate"] as? String ?? ""
-                            self.inputBook.ISBN = isbn
                             if let pageCount = bookInfo["pageCount"] as? Int {
                                 self.inputBook.pageNumber = String(pageCount)
                             }

@@ -20,7 +20,7 @@ struct AllBookGridView: View {
     var body: some View {
         NavigationView {
             ScrollView {
-                LazyVGrid(columns: [GridItem(.adaptive(minimum: 200))], spacing: 5) {
+                LazyVGrid(columns: [GridItem(.adaptive(minimum: 100))], spacing: 5) {
                     ForEach(books) { book in
                         NavigationLink(destination: BookView(viewModel: viewModel, book: book)) {
                             ZStack {
@@ -33,11 +33,11 @@ struct AllBookGridView: View {
                                         Spacer()
                                     }
                                 }
-                            }.frame(width: 150, height: 200)
+                            }
                         }
                     }
                 }
             }.navigationTitle("Libri")
-        }
+        }.navigationViewStyle(StackNavigationViewStyle())
     }
 }

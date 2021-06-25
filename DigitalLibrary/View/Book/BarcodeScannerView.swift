@@ -16,7 +16,7 @@ struct BarcodeScannerView: View {
     @Environment(\.presentationMode) var presentationMode
     
     @State var torchIsOn = false
-    @State var ISBN = ""
+    @State var showPreview = false
     
     func disableAll() {
         torchIsOn = false
@@ -29,31 +29,66 @@ struct BarcodeScannerView: View {
             Spacer()
             
             HStack {
-                Button(action: { disableAll() }, label: { Text("Annulla") })
+                Button(action: { disableAll(); viewModel.resetInputBook() }, label: { Text("Annulla") })
                 Spacer()
-                Button(
-                    action: {
-                        disableAll()
-                        viewModel.getBookDataFromISBN(isbn: ISBN)
-                    },
-                    label: { Text("Conferma") })
+                Button(action: { disableAll() }, label: { Text("Conferma") }).disabled(showPreview == false || viewModel.notFound)
             }.padding(.horizontal).padding(.top)
 
-            TextField("ISBN", text: $ISBN).textFieldStyle(RoundedBorderTextFieldStyle()).padding(.horizontal).keyboardType(.numberPad)
+            TextField("ISBN", text: $viewModel.inputBook.ISBN, onEditingChanged: { changed in
+                if (!changed) {
+                    viewModel.getBookDataFromISBN(isbn: viewModel.inputBook.ISBN)
+                }
+            })
+            .textFieldStyle(RoundedBorderTextFieldStyle()).padding(.horizontal).keyboardType(.numberPad)
             
             ZStack {
                 CBScanner(
                     supportBarcode: .constant([.ean13]),
                     torchLightIsOn: $torchIsOn,
-                    scanInterval: .constant(1.0)
+                    scanInterval: .constant(3.0)
                 ){ result in
-                    ISBN = result.value
+                    if (result.value != viewModel.inputBook.ISBN) {
+                        viewModel.getBookDataFromISBN(isbn: result.value)                        
+                    }
+                    showPreview = true
                 }
                 onDraw: {
                     let lineWidth = 2
                     let lineColor = UIColor.red
                     let fillColor = UIColor(red: 0, green: 1, blue: 0.2, alpha: 0.4)
                     $0.draw(lineWidth: CGFloat(lineWidth), lineColor: lineColor, fillColor: fillColor)
+                }
+                
+                VStack {
+                    if (showPreview) {
+                        HStack {
+                            Spacer()
+                            if (viewModel.notFound) {
+                                VStack {
+                                    Text("Nessun risultato trovato").font(.title2)
+                                    Text("L'ISBN inserito non esiste o non è presente nel database di Google Books")
+                                }
+                            } else {
+                                HStack {
+                                    Spacer()
+                                    if viewModel.inputBook.cover != nil {
+                                        Image(uiImage: viewModel.inputBook.cover!).resizable().scaledToFit().frame(width: 50, height: 100)
+                                    }
+                                    Spacer()
+                                    if (viewModel.inputBook.title != "") {
+                                        Text(viewModel.inputBook.title).font(.title2)
+                                    }
+                                    if (viewModel.inputBook.author != "") {
+                                        Text(" - ")
+                                        Text(viewModel.inputBook.author)
+                                    }
+                                    Spacer()
+                                }
+                            }
+                            Spacer()
+                        }.background(Color(UIColor.systemBackground).opacity(0.5))
+                    }
+                    Spacer()
                 }
                 
                 VStack {
