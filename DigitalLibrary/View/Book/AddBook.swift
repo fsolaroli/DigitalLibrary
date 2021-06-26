@@ -17,8 +17,26 @@ struct AddBook: View {
     
     @Environment(\.presentationMode) var presentationMode
 
-    @ObservedObject var shelf: Shelf
-     
+    @State var bookshelf: Bookshelf?
+    
+    @State var shelf: Shelf?
+    
+    @FetchRequest(
+        entity: Bookshelf.entity(),
+        sortDescriptors: [NSSortDescriptor(keyPath: \Bookshelf.index, ascending: true)],
+        animation: .default)
+    private var bookshelfs: FetchedResults<Bookshelf>
+    
+    var shelfs: [Shelf] {
+        get {
+            var shelfs:[Shelf] = []
+            if let bookshelf = bookshelf {
+                bookshelf.shelfs!.forEach({ s in shelfs.append(s as! Shelf)})
+            }
+            return shelfs.sorted(by: {s1, s2 in s1.index < s2.index})
+        }
+    }
+    
     @State var showBarcodeScanner = false
     @State var showCoverScanner = false
     @State var torchIsOn = false
@@ -32,6 +50,27 @@ struct AddBook: View {
         NavigationView {
             VStack {
                 Form {
+                    Section(header: Text("Posizione"), content: {
+                        Picker(selection: Binding<Bookshelf?>(
+                            get: { bookshelf },
+                            set: { bookshelf = $0 }
+                        ), label: Text("Libreria"), content: {
+                            ForEach(Array(bookshelfs)) { bookshelf in
+                                Text(bookshelf.name!).tag(Optional(bookshelf))
+                            }
+                        })
+                        if (shelfs != []) {
+                            Picker(selection: Binding<Shelf?>(
+                                get: { shelf },
+                                set: { shelf = $0 }
+                            ), label: Text("Scaffale"), content: {
+                                ForEach(shelfs) { shelf in
+                                    Text(shelf.name!).tag(Optional(shelf))
+                                }
+                            })
+                        }
+                    })
+                    
                     Section(header: Text("Titolo"), content: {
                         TextField("Titolo", text: $viewModel.inputBook.title)
                     })
@@ -86,15 +125,15 @@ struct AddBook: View {
                 trailing: Button(
                     action: {
                         viewModel.addBook(
-                            shelf: shelf,
-                            index: shelf.books?.count ?? 0,
+                            shelf: shelf!,
+                            index: shelf?.books?.count ?? 0,
                             viewContext: viewContext
                         )
                         presentationMode.wrappedValue.dismiss()
                     },
                     label: { Text("Aggiungi") }
                 )
-                .disabled(viewModel.inputBook.title == ""))
+                .disabled(viewModel.inputBook.title == "" || self.shelf == nil))
         }
         .sheet(isPresented: $showBarcodeScanner, content: { BarcodeScannerView(viewModel: viewModel) })
         .sheet(isPresented: $showCoverScanner, content: {

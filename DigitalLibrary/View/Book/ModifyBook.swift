@@ -18,7 +18,6 @@ struct ModifyBook: View {
     @ObservedObject var book: Book
 
     @State var showCoverScanner = false
-    @State var torchIsOn = false
 
     @State var bookshelf: Bookshelf
     
@@ -44,10 +43,7 @@ struct ModifyBook: View {
         NavigationView {
             Form {
                 Section(header: Text("Posizione"), content: {
-                    Picker(selection: Binding<Bookshelf>(
-                        get: { bookshelf },
-                        set: { bookshelf = $0 }
-                    ), label: Text("Libreria"), content: {
+                    Picker(selection: $bookshelf, label: Text("Libreria"), content: {
                         ForEach(Array(bookshelfs)) { bookshelf in
                             Text(bookshelf.name!).tag(bookshelf)
                         }

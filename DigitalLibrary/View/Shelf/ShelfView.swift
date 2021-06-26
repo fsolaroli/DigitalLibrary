@@ -97,7 +97,7 @@ struct ShelfView: View {
         .sheet(
             isPresented: $showAddBook, onDismiss: { viewModel.resetInputBook() }, 
             content: {
-                AddBook(viewModel: viewModel, shelf: shelf)
+                AddBook(viewModel: viewModel, bookshelf: shelf.bookshelf!, shelf: shelf)
                     .environment(\.managedObjectContext, viewContext)
             })
         }

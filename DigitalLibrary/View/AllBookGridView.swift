@@ -11,6 +11,10 @@ struct AllBookGridView: View {
     
     @ObservedObject var viewModel: ManageData
     
+    @Environment(\.managedObjectContext) private var viewContext
+    
+    @State var showAddBook = false
+    
     @FetchRequest(
         entity: Book.entity(),
         sortDescriptors: [NSSortDescriptor(keyPath: \Book.title, ascending: true)],
@@ -27,7 +31,17 @@ struct AllBookGridView: View {
                         }
                     }
                 }
-            }.navigationTitle("Libri")
-        }.navigationViewStyle(StackNavigationViewStyle())
+            }
+            .navigationTitle("Libri")
+            .navigationBarItems(trailing: Button(action: { showAddBook = true }, label: { Image(systemName: "plus.circle").imageScale(.large) }))
+        }
+        .navigationViewStyle(StackNavigationViewStyle())
+        .sheet(
+            isPresented: $showAddBook, onDismiss: { viewModel.resetInputBook() },
+            content: {
+                AddBook(viewModel: viewModel)
+                    .environment(\.managedObjectContext, viewContext)
+            }
+        )
     }
 }
