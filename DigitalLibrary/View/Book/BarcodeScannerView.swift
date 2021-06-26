@@ -29,14 +29,14 @@ struct BarcodeScannerView: View {
             Spacer()
             
             HStack {
-                Button(action: { disableAll(); viewModel.resetInputBook() }, label: { Text("Annulla") })
+                Button(action: { disableAll(); viewModel.resetNewInputBook() }, label: { Text("Annulla") })
                 Spacer()
-                Button(action: { disableAll() }, label: { Text("Conferma") }).disabled(showPreview == false || viewModel.notFound)
+                Button(action: { disableAll(); viewModel.inputBook = viewModel.newInputBook; viewModel.resetNewInputBook() }, label: { Text("Conferma") }).disabled(showPreview == false || viewModel.notFound)
             }.padding(.horizontal).padding(.top)
 
-            TextField("ISBN", text: $viewModel.inputBook.ISBN, onEditingChanged: { changed in
+            TextField("ISBN", text: $viewModel.newInputBook.ISBN, onEditingChanged: { changed in
                 if (!changed) {
-                    viewModel.getBookDataFromISBN(isbn: viewModel.inputBook.ISBN)
+                    viewModel.getBookDataFromISBN(isbn: viewModel.newInputBook.ISBN)
                 }
             })
             .textFieldStyle(RoundedBorderTextFieldStyle()).padding(.horizontal).keyboardType(.numberPad)
@@ -47,7 +47,7 @@ struct BarcodeScannerView: View {
                     torchLightIsOn: $torchIsOn,
                     scanInterval: .constant(3.0)
                 ){ result in
-                    if (result.value != viewModel.inputBook.ISBN) {
+                    if (result.value != viewModel.newInputBook.ISBN) {
                         viewModel.getBookDataFromISBN(isbn: result.value)                        
                     }
                     showPreview = true
@@ -71,16 +71,16 @@ struct BarcodeScannerView: View {
                             } else {
                                 HStack {
                                     Spacer()
-                                    if viewModel.inputBook.cover != nil {
-                                        Image(uiImage: viewModel.inputBook.cover!).resizable().scaledToFit().frame(width: 50, height: 100)
+                                    if viewModel.newInputBook.cover != nil {
+                                        Image(uiImage: viewModel.newInputBook.cover!).resizable().scaledToFit().frame(width: 50, height: 100)
                                     }
                                     Spacer()
-                                    if (viewModel.inputBook.title != "") {
-                                        Text(viewModel.inputBook.title).font(.title2)
+                                    if (viewModel.newInputBook.title != "") {
+                                        Text(viewModel.newInputBook.title).font(.title2)
                                     }
-                                    if (viewModel.inputBook.author != "") {
+                                    if (viewModel.newInputBook.author != "") {
                                         Text(" - ")
-                                        Text(viewModel.inputBook.author)
+                                        Text(viewModel.newInputBook.author)
                                     }
                                     Spacer()
                                 }

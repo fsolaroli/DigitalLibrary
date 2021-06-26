@@ -14,13 +14,14 @@ class ManageData: ObservableObject {
     let isbnBookAPI = "https://www.googleapis.com/books/v1/volumes?q=isbn:"    
     
     @Published var inputBook = InputBook()
+    @Published var newInputBook = InputBook()
     
     @Published var notFound = false
     
     func getBookDataFromISBN(isbn: String) {
         notFound = false
-        self.resetInputBook()
-        self.inputBook.ISBN = isbn
+        newInputBook = InputBook()
+        newInputBook.ISBN = isbn
         let session = URLSession(configuration: .default)
         if let url = URL(string: isbnBookAPI + isbn) {
             let task = session.dataTask(with: url) { (data: Data?, response, error) in
@@ -30,13 +31,13 @@ class ManageData: ObservableObject {
                         if let items = json["items"] as? Array<Any> {
                             let book = items[0] as! Dictionary<String, Any>
                             let bookInfo = book["volumeInfo"] as! Dictionary<String, Any>
-                            self.inputBook.title = bookInfo["title"] as? String ?? ""
+                            self.newInputBook.title = bookInfo["title"] as? String ?? ""
                             let authors = bookInfo["authors"] as? Array<String> ?? []
-                            self.inputBook.author = authors.joined(separator: ", ")
-                            self.inputBook.editor = bookInfo["publisher"] as? String ?? ""
-                            self.inputBook.publishDate = bookInfo["publishedDate"] as? String ?? ""
+                            self.newInputBook.author = authors.joined(separator: ", ")
+                            self.newInputBook.editor = bookInfo["publisher"] as? String ?? ""
+                            self.newInputBook.publishDate = bookInfo["publishedDate"] as? String ?? ""
                             if let pageCount = bookInfo["pageCount"] as? Int {
-                                self.inputBook.pageNumber = String(pageCount)
+                                self.newInputBook.pageNumber = String(pageCount)
                             }
                             if let imageLinks = bookInfo["imageLinks"] as? Dictionary<String, String> {
                                 var url = imageLinks["thumbnail"]!
@@ -45,7 +46,7 @@ class ManageData: ObservableObject {
                                     let data = try? Data(contentsOf: URL(string: url as String)!)
                                     DispatchQueue.main.async {
                                         if let imageData = data {
-                                            self.inputBook.cover = UIImage(data: imageData)!
+                                            self.newInputBook.cover = UIImage(data: imageData)!
                                         }
                                     }
                                 }
@@ -64,6 +65,10 @@ class ManageData: ObservableObject {
     
     func resetInputBook() {
         self.inputBook = InputBook()
+    }
+    
+    func resetNewInputBook() {
+        self.newInputBook = InputBook()
     }
     
     func addBookshelf(name: String, index: Int, viewContext: NSManagedObjectContext) {
