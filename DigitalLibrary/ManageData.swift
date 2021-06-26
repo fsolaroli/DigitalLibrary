@@ -71,14 +71,7 @@ class ManageData: ObservableObject {
             let newBookshelf = Bookshelf(context: viewContext)
             newBookshelf.name = name
             newBookshelf.index = Int64(index)
-            do {
-                try viewContext.save()
-            } catch {
-                // Replace this implementation with code to handle the error appropriately.
-                // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-                let nsError = error as NSError
-                fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
-            }
+            try? viewContext.save()
         }
     }
     
@@ -88,14 +81,7 @@ class ManageData: ObservableObject {
             newShelf.name = name
             newShelf.index = Int64(index)
             bookshelf.addToShelfs(newShelf)
-            do {
-                try viewContext.save()
-            } catch {
-                // Replace this implementation with code to handle the error appropriately.
-                // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-                let nsError = error as NSError
-                fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
-            }
+            try? viewContext.save()
         }
     }
     
@@ -117,7 +103,6 @@ class ManageData: ObservableObject {
             if let pageCount = Int32(inputBook.pageNumber) {
                 newBook.pageCount = pageCount
             }
-            newBook.borrowed = false
             newBook.reading = false
             
             if let jpegData = inputBook.cover?.jpegData(compressionQuality: 1.0) {
@@ -126,15 +111,8 @@ class ManageData: ObservableObject {
             
             shelf.addToBooks(newBook)
             
-            do {
-                try viewContext.save()
-                inputBook = InputBook()
-            } catch {
-                // Replace this implementation with code to handle the error appropriately.
-                // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-                let nsError = error as NSError
-                fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
-            }
+            try? viewContext.save()
+            inputBook = InputBook()
         }
     }
     
@@ -153,14 +131,7 @@ class ManageData: ObservableObject {
                 }
             }
            
-            do {
-                try viewContext.save()
-            } catch {
-                // Replace this implementation with code to handle the error appropriately.
-                // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-                let nsError = error as NSError
-                fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
-            }
+            try? viewContext.save()
         }
     }
     
@@ -179,14 +150,7 @@ class ManageData: ObservableObject {
                 }
             }
            
-            do {
-                try viewContext.save()
-            } catch {
-                // Replace this implementation with code to handle the error appropriately.
-                // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-                let nsError = error as NSError
-                fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
-            }
+            try? viewContext.save()
         }
     }
     
@@ -218,15 +182,7 @@ class ManageData: ObservableObject {
     
     func delete<I: NSManagedObject>(_ item: I, viewContext: NSManagedObjectContext) {
         viewContext.delete(item)
-        
-        do {
-            try viewContext.save()
-        } catch {
-            // Replace this implementation with code to handle the error appropriately.
-            // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-            let nsError = error as NSError
-            fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
-        }
+        try? viewContext.save()
     }
     
     func delete<I: NSManagedObject>(_ items: [I], viewContext: NSManagedObjectContext) {
@@ -235,14 +191,7 @@ class ManageData: ObservableObject {
                 viewContext.delete(item)
             }
             
-            do {
-                try viewContext.save()
-            } catch {
-                // Replace this implementation with code to handle the error appropriately.
-                // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-                let nsError = error as NSError
-                fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
-            }
+            try? viewContext.save()
         }
     }
 }

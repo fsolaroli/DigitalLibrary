@@ -24,6 +24,19 @@ struct BookView: View {
             HStack {
                 Text("\(book.shelf?.bookshelf?.name ?? "Nome libreria") > \(book.shelf?.name ?? "Nome scaffale")").font(.footnote).foregroundColor(Color(UIColor.systemBlue))
                 Spacer()
+                Button(
+                    action: {
+                        book.favourite.toggle()
+                        try? viewContext.save()
+                    },
+                    label: {
+                        if (book.favourite) {
+                            Image(systemName: "heart.fill").foregroundColor(.red)
+                        } else {
+                            Image(systemName: "heart")
+                        }
+                    }
+                ).font(.title)
             }.padding(.top).padding(.horizontal
             )
             Text(book.title ?? "").font(.title).padding()
@@ -56,6 +69,30 @@ struct BookView: View {
                         Text(book.pageCount != 0 ? String(book.pageCount) : "")
                     }
                 }.padding(.horizontal, 30)
+            }
+            Divider()
+            VStack {
+                Toggle("Dato in prestito", isOn: Binding(
+                    get: { book.borrowed != nil },
+                    set: {
+                        if ($0) {
+                            book.borrowed = Borrowed(context: viewContext)
+                            book.borrowed!.date = Date()
+                        } else {
+                            if let borrowed = book.borrowed { viewContext.delete(borrowed) }
+                        }
+                        try? viewContext.save()
+                    })
+                ).padding(.horizontal).font(.headline).toggleStyle(SwitchToggleStyle(tint: Color(UIColor.systemBlue)))
+                if (book.borrowed != nil) {
+                    TextField("Persona", text: Binding(
+                        get: { book.borrowed!.person ?? "" },
+                        set: {
+                            book.borrowed!.person = $0;
+                            try? viewContext.save()
+                        }))
+                    DatePicker("Data", selection: Binding(get: { book.borrowed!.date ?? Date() }, set: { book.borrowed!.date = $0 }), displayedComponents: .date)
+                }
             }
             Divider()
             Button(

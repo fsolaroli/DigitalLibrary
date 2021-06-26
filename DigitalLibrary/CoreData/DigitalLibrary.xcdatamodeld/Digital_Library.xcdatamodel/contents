@@ -2,22 +2,28 @@
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="18154" systemVersion="20F71" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="Book" representedClassName="Book" syncable="YES" codeGenerationType="class">
         <attribute name="authors" optional="YES" attributeType="String"/>
-        <attribute name="borrowed" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="cover" optional="YES" attributeType="Binary" allowsExternalBinaryDataStorage="YES"/>
         <attribute name="edition" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="editor" optional="YES" attributeType="String"/>
+        <attribute name="favourite" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="index" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="isbn" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="pageCount" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="publishDate" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="reading" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="title" attributeType="String"/>
+        <relationship name="borrowed" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Borrowed" inverseName="book" inverseEntity="Borrowed"/>
         <relationship name="shelf" maxCount="1" deletionRule="Nullify" destinationEntity="Shelf" inverseName="books" inverseEntity="Shelf"/>
     </entity>
     <entity name="Bookshelf" representedClassName="Bookshelf" syncable="YES" codeGenerationType="class">
         <attribute name="index" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="name" attributeType="String"/>
         <relationship name="shelfs" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="Shelf" inverseName="bookshelf" inverseEntity="Shelf"/>
+    </entity>
+    <entity name="Borrowed" representedClassName="Borrowed" syncable="YES" codeGenerationType="class">
+        <attribute name="date" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="person" optional="YES" attributeType="String"/>
+        <relationship name="book" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Book" inverseName="borrowed" inverseEntity="Book"/>
     </entity>
     <entity name="Shelf" representedClassName="Shelf" syncable="YES" codeGenerationType="class">
         <attribute name="index" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
@@ -26,8 +32,9 @@
         <relationship name="bookshelf" maxCount="1" deletionRule="Nullify" ordered="YES" destinationEntity="Bookshelf" inverseName="shelfs" inverseEntity="Bookshelf"/>
     </entity>
     <elements>
-        <element name="Book" positionX="-37.0458984375" positionY="-102.78857421875" width="128" height="209"/>
+        <element name="Book" positionX="-37.0458984375" positionY="-102.78857421875" width="128" height="224"/>
         <element name="Bookshelf" positionX="-330.301025390625" positionY="-4.58349609375" width="128" height="74"/>
         <element name="Shelf" positionX="-183.695068359375" positionY="202.1500854492188" width="205.65087890625" height="89"/>
+        <element name="Borrowed" positionX="-180" positionY="54" width="128" height="74"/>
     </elements>
 </model>

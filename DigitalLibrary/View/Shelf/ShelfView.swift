@@ -36,23 +36,17 @@ struct ShelfView: View {
                 if (isEditable) {
                     TextField("Nome scaffale", text: Binding<String>(
                         get: { shelf.name! },
-                        set: { shelf.name = $0 }
+                        set: {
+                            shelf.name = $0
+                            try? viewContext.save()
+                        }
                     )).textFieldStyle(RoundedBorderTextFieldStyle())
                 } else {
                     Text(shelf.name ?? "Nome Scaffale").font(.title2)
                 }
                 Spacer()
                 Text(isEditable ? "Fatto" : "Modifica")
-                .onTapGesture {
-                    if(isEditable) {
-                        do {
-                            try viewContext.save()
-                        } catch {
-                            print("Nome dello scaffale non aggiornato")
-                        }
-                    }
-                    isEditable.toggle()
-                }
+                .onTapGesture { isEditable.toggle() }
             }
             if isEditable {
                 List {
@@ -86,17 +80,7 @@ struct ShelfView: View {
                     LazyHStack {
                         ForEach(books) { book in
                             NavigationLink(destination: BookView(viewModel: viewModel, book: book)) {
-                                ZStack {
-                                    if let coverData = book.cover, let coverImage = UIImage(data: coverData){
-                                        Image(uiImage: coverImage).resizable().scaledToFit()
-                                    } else {
-                                        Image(systemName: "book.closed").resizable().scaledToFit().opacity(0.5)
-                                        VStack {
-                                            Text(book.title ?? "").font(.title).foregroundColor(Color(UIColor.label)).padding(20)
-                                            Spacer()
-                                        }
-                                    }
-                                }.frame(width: 150, height: 200)
+                                SmallBookView(book: book).frame(width: 150, height: 200)
                             }
                         }
                     }

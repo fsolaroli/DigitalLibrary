@@ -35,7 +35,10 @@ struct ShelfListView: View {
         if (isEditable) {
             TextField("Nome libreria", text: Binding<String>(
                 get: { bookshelf.name! },
-                set: { bookshelf.name = $0 }
+                set: {
+                    bookshelf.name = $0;
+                    try? viewContext.save()
+                }
             )).textFieldStyle(RoundedBorderTextFieldStyle()).font(.title).padding()
         }
         List {
@@ -77,14 +80,9 @@ struct ShelfListView: View {
         .navigationBarItems(
             leading: Button(
                 action: {
-                    if(isEditable) {
-                        do {
-                            try viewContext.save()
-                        } catch {
-                            print("Nome della libreria non aggiornato")
-                        }
-                    }
-                    isEditable.toggle()},
+                    if(isEditable) { try? viewContext.save() }
+                    isEditable.toggle()
+                },
                 label: { Text(isEditable ? "Fatto" : "Modifica") }
             ),
             trailing: Button(
