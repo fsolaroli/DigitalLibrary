@@ -24,13 +24,19 @@ struct AddBookshelf: View {
                 Section {
                     TextField("Nome", text: $name)
                 }
-                Button(action: {
-                    viewModel.addBookshelf(name: name, index: nextIndex, viewContext: viewContext)
-                    presentationMode.wrappedValue.dismiss()
-                }, label: {
-                    Text("Aggiungi")
-                }).disabled(name == "")
-            }.navigationTitle("Nuova Libreria")
+            }
+            .navigationTitle("Nuova Libreria")
+            .navigationBarItems(
+                leading: Button(action: { presentationMode.wrappedValue.dismiss() }, label: { Text("Annulla") }),
+                trailing: Button(
+                    action: {
+                        viewModel.addBookshelf(name: name, index: nextIndex, viewContext: viewContext)
+                        presentationMode.wrappedValue.dismiss()
+                    },
+                    label: { Text("Aggiungi") }
+                )
+                .disabled(name == "")
+            )
         }
     }
 }

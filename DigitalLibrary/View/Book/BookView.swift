@@ -91,7 +91,13 @@ struct BookView: View {
                             book.borrowed!.person = $0;
                             try? viewContext.save()
                         }))
-                    DatePicker("Data", selection: Binding(get: { book.borrowed!.date ?? Date() }, set: { book.borrowed!.date = $0 }), displayedComponents: .date)
+                    DatePicker("Data", selection: Binding(
+                        get: { book.borrowed!.date ?? Date() },
+                        set: {
+                            book.borrowed!.date = $0
+                            try? viewContext.save()
+                        }
+                    ), displayedComponents: .date)
                 }
             }
             Divider()
