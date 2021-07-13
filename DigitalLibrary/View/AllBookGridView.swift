@@ -18,6 +18,9 @@ struct AllBookGridView: View {
     
     @State var filter = ""
     
+//    var id: UUID
+    
+    
     @FetchRequest(
         entity: Book.entity(),
         sortDescriptors: [NSSortDescriptor(keyPath: \Book.title, ascending: true)],
@@ -64,7 +67,7 @@ struct AllBookGridView: View {
                             }
                         }
                     ).font(.title2)
-                }.padding(.bottom, 1).padding(.horizontal, 5)
+                }.padding(.bottom, 1).padding(.horizontal, 5).padding(.top, 10)
                 Divider()
                 ScrollView(.vertical) {
                     if (filteredBooks.isEmpty && !books.isEmpty) {
@@ -80,6 +83,7 @@ struct AllBookGridView: View {
                 }
             }
             .navigationTitle("Libri")
+            .navigationBarTitleDisplayMode(.inline)
             .navigationBarItems(trailing: Button(action: { showAddBook = true }, label: { Image(systemName: "plus").imageScale(.large) }))
         }
         .navigationViewStyle(StackNavigationViewStyle())

@@ -19,6 +19,8 @@ struct BookshelfListView: View {
     @State var showAlert = false;
     @State var itemToRemove: Bookshelf? = nil
     
+//    var id: UUID
+    
     @FetchRequest(
         entity: Bookshelf.entity(),
         sortDescriptors: [NSSortDescriptor(keyPath: \Bookshelf.index, ascending: true)],
@@ -29,7 +31,7 @@ struct BookshelfListView: View {
         NavigationView {
             List {
                 ForEach(bookshelfs) { bookshelf in
-                    NavigationLink(destination: ShelfListView(viewModel: viewModel, bookshelf: bookshelf)) {
+                    NavigationLink(destination: ShelfListView(viewModel: viewModel, bookshelf: bookshelf).environment(\.managedObjectContext, viewContext)) {
                         Text(bookshelf.name!).font(.title2)
                     }
                 }
@@ -73,7 +75,7 @@ struct BookshelfListView: View {
                     }
                 }
             )}
-        }
+        }.navigationViewStyle(StackNavigationViewStyle())
     }
     
     func move(from source: IndexSet, to destination: Int) {

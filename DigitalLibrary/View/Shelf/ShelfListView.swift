@@ -46,7 +46,7 @@ struct ShelfListView: View {
                 if isEditable {
                     Text(shelf.name ?? "").font(.title2)
                 } else {
-                    ShelfView(viewModel: viewModel, shelf: shelf)
+                    SmallShelfView(viewModel: viewModel, shelf: shelf)
                 }
             }
             .onDelete(perform: { indexSet in
@@ -92,7 +92,8 @@ struct ShelfListView: View {
                 label: {
                     Image(systemName: "plus").imageScale(.large)
                 }
-            ))
+            )
+        )
         .sheet(isPresented: $showAddShelfView, content: {
             AddShelf(viewModel: viewModel, nextIndex:bookshelf.shelfs?.count ?? 0, bookshelf: bookshelf)
                 .environment(\.managedObjectContext, viewContext)
