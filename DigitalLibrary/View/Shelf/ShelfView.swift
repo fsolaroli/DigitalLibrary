@@ -14,6 +14,7 @@ struct ShelfView: View {
     @Environment(\.managedObjectContext) private var viewContext
     
     @State private var isEditable = false
+    @State var showAddBook = false
     
     @ObservedObject var shelf: Shelf
     
@@ -83,33 +84,44 @@ struct ShelfView: View {
                 var itemsToRemove = [Book]()
                 for indexToRemove in indexSet {
                     itemsToRemove.append((shelf.books?.object(at: indexToRemove)) as! Book)
-                }
+                } // FIXME: - Incorrect delete probably caused by disallignment in index when moving
 
                 viewModel.delete(itemsToRemove, viewContext: viewContext)
             })
             .onMove(perform: move)
         }
         .environment(\.editMode, .constant(isEditable ? .active : .inactive))
-//        .frame(height: (65 * CGFloat(books.count)))
         .navigationTitle(isEditable ? "" : shelf.name ?? "Nome Libreria")
         .navigationBarTitleDisplayMode(isEditable ? .inline : .automatic)
-        .navigationBarItems(
-            leading: Button(
-                action: {
-                    if(isEditable) { try? viewContext.save() }
-                    isEditable.toggle()
-                },
-                label: { Text(isEditable ? "Fatto" : "Modifica") }
-            )
-//            ,
-//            trailing: Button(
-//                action: {
-//                    showAddShelfView = true
-//                },
-//                label: {
-//                    Image(systemName: "plus").imageScale(.large)
-//                }
-//            )
+        .toolbar {
+            ToolbarItem(placement: .primaryAction) {
+                if !isEditable {
+                    Menu {
+                        Button(
+                            action: { if(isEditable) { try? viewContext.save() }; isEditable.toggle() },
+                            label: { Image(systemName: "list.bullet"); Text("Modifica Scaffale") }
+                        )
+                        Button(
+                            action: { showAddBook = true },
+                            label: { Image(systemName: "plus"); Text("Aggiungi Libro") }
+                        )
+                    }
+                    label: {
+                        HStack {
+                            Image(systemName: "ellipsis").imageScale(.large)
+                        }.frame(width: 40, height: 60)
+                    }
+                } else {
+                    Button(action: { isEditable.toggle() }, label: { Text("Fatto") })
+                }
+            }
+        }
+        .sheet(
+            isPresented: $showAddBook, onDismiss: { viewModel.resetInputBook() },
+            content: {
+                AddBook(viewModel: viewModel, bookshelf: shelf.bookshelf!, shelf: shelf)
+                    .environment(\.managedObjectContext, viewContext)
+            }
         )
     }
     

@@ -42,7 +42,7 @@ struct BookView: View {
                     }
                 ).font(.title)
             }.padding(.top).padding(.horizontal)
-            Text(book.title ?? "").font(.largeTitle).padding()
+            Text(book.title ?? "").font(.largeTitle).fontWeight(.bold).padding()
             Spacer()
             if let coverData = book.cover, let coverImage = UIImage(data: coverData) {
                 Image(uiImage: coverImage).resizable().scaledToFit().padding(.horizontal

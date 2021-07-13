@@ -130,6 +130,7 @@
 				E5467DB1267E1CCB00EA89BD /* ManageData.swift */,
 				E5FD36232682496A00693351 /* InputBook.swift */,
 				E5467D92267E15C600EA89BD /* Persistence.swift */,
+				E5FD361E267FBC9600693351 /* Extensions */,
 				E52EF8AC269E172B00ACEEB0 /* Assets.xcassets */,
 				E5467D9E267E15F700EA89BD /* DigitalLibrary.xcdatamodeld */,
 				E5467D97267E15C600EA89BD /* Info.plist */,
@@ -154,7 +155,6 @@
 				E5301CA6268614EC0081F5EF /* Bookshelf */,
 				E5301CA72686152C0081F5EF /* Shelf */,
 				E5301CA8268615320081F5EF /* Book */,
-				E5FD361E267FBC9600693351 /* Extensions */,
 			);
 			path = View;
 			sourceTree = "<group>";

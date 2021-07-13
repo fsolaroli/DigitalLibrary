@@ -18,9 +18,7 @@ struct BookshelfListView: View {
     
     @State var showAlert = false;
     @State var itemToRemove: Bookshelf? = nil
-    
-//    var id: UUID
-    
+      
     @FetchRequest(
         entity: Bookshelf.entity(),
         sortDescriptors: [NSSortDescriptor(keyPath: \Bookshelf.index, ascending: true)],
@@ -51,15 +49,29 @@ struct BookshelfListView: View {
             .environment(\.editMode, .constant(isEditable ? .active : .inactive))
             .navigationTitle("Librerie")
             .listStyle(PlainListStyle())
-            .navigationBarItems(
-                leading: Button(
-                    action: { isEditable.toggle() },
-                    label: { Text(isEditable ? "Fatto" : "Modifica") }).disabled(bookshelfs.isEmpty),
-                trailing: Button(
-                    action: { showAddBookshelf = true },
-                    label: {Image(systemName: "plus").imageScale(.large) }
-                ) 
-            )
+            .toolbar {
+                ToolbarItem(placement: .primaryAction) {
+                    if !isEditable {
+                        Menu {
+                            Button(
+                                action: { isEditable.toggle() },
+                                label: { Image(systemName: "list.bullet"); Text("Modifica Librerie") }
+                            ).disabled(bookshelfs.isEmpty)
+                            Button(
+                                action: { showAddBookshelf = true },
+                                label: { Image(systemName: "plus"); Text("Aggiungi Libreria") }
+                            )
+                        }
+                        label: {
+                            HStack {
+                                Image(systemName: "ellipsis").imageScale(.large)
+                            }.frame(width: 40, height: 60)
+                        }
+                    } else {
+                        Button(action: { isEditable.toggle() }, label: { Text("Fatto") }).disabled(bookshelfs.isEmpty)
+                    }
+                }
+            }
             .sheet(isPresented: $showAddBookshelf, content: {
                 AddBookshelf(viewModel: viewModel, nextIndex: bookshelfs.count)
                     .environment(\.managedObjectContext, viewContext)

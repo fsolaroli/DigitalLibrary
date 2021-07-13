@@ -77,23 +77,29 @@ struct ShelfListView: View {
         .navigationTitle(isEditable ? "" : bookshelf.name ?? "Nome Libreria")
         .navigationBarTitleDisplayMode(isEditable ? .inline : .automatic)
         .listStyle(PlainListStyle())
-        .navigationBarItems(
-            leading: Button(
-                action: {
-                    if(isEditable) { try? viewContext.save() }
-                    isEditable.toggle()
-                },
-                label: { Text(isEditable ? "Fatto" : "Modifica") }
-            ),
-            trailing: Button(
-                action: {
-                    showAddShelfView = true
-                },
-                label: {
-                    Image(systemName: "plus").imageScale(.large)
+        .toolbar {
+            ToolbarItem(placement: .primaryAction) {
+                if !isEditable {
+                    Menu {
+                        Button(
+                            action: { if(isEditable) { try? viewContext.save() }; isEditable.toggle() },
+                            label: { Image(systemName: "list.bullet"); Text("Modifica Libreria") }
+                        )
+                        Button(
+                            action: { showAddShelfView = true },
+                            label: { Image(systemName: "plus"); Text("Aggiungi Scaffale") }
+                        )
+                    }
+                    label: {
+                        HStack {
+                            Image(systemName: "ellipsis").imageScale(.large)
+                        }.frame(width: 40, height: 60)
+                    }
+                } else {
+                    Button(action: { isEditable.toggle() }, label: { Text("Fatto") })
                 }
-            )
-        )
+            }
+        }
         .sheet(isPresented: $showAddShelfView, content: {
             AddShelf(viewModel: viewModel, nextIndex:bookshelf.shelfs?.count ?? 0, bookshelf: bookshelf)
                 .environment(\.managedObjectContext, viewContext)

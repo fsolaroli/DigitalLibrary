@@ -17,10 +17,7 @@ struct AllBookGridView: View {
     @State var showFavourites = false
     
     @State var filter = ""
-    
-//    var id: UUID
-    
-    
+   
     @FetchRequest(
         entity: Book.entity(),
         sortDescriptors: [NSSortDescriptor(keyPath: \Book.title, ascending: true)],

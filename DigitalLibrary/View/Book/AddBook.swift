@@ -140,7 +140,7 @@ struct AddBook: View {
             ScannerCoverView { result in
                 switch result {
                     case .success(let scannedImages):
-                        viewModel.inputBook.cover = scannedImages[0]
+                        viewModel.inputBook.cover = scannedImages.last
                     case .failure(let error):
                         print(error.localizedDescription)
                 }
