@@ -13,13 +13,19 @@ struct SmallBookView: View {
     
     var body: some View {
         ZStack {
-            ZStack {
+            VStack {
                 if let coverData = book.cover, let coverImage = UIImage(data: coverData){
                     Image(uiImage: coverImage).resizable().scaledToFit()
                 } else {
-                    Image(systemName: "book.closed").resizable().scaledToFit().opacity(0.5)
-                    VStack {
-                        Text(book.title ?? "").font(.title).foregroundColor(Color(UIColor.label)).padding(20)
+                    Image(systemName: "book.closed").resizable().scaledToFit().opacity(0.5).font(Font.title.weight(.ultraLight)).foregroundColor(Color.gray)
+                    .overlay(
+                        VStack {
+                            Text(book.title ?? "").font(.title2).padding(20)
+                            Text(book.authors ?? "").font(.subheadline)
+                            Spacer()
+                        }.foregroundColor(Color(UIColor.label)).lineLimit(1)
+                    )
+                    if (book.borrowed != nil) {
                         Spacer()
                     }
                 }
@@ -30,7 +36,7 @@ struct SmallBookView: View {
                         Spacer()
                         Image(systemName: "heart.fill")
                             .overlay(Image(systemName: "heart").foregroundColor(Color(UIColor.label)).font(.title2))
-                            .foregroundColor(Color(UIColor.red)).padding(.horizontal).padding(.top, 3).font(.title2)
+                            .foregroundColor(Color(UIColor.red)).padding(.horizontal, 5).padding(.top, 3).font(.title2)
                     }
                     Spacer()
                 }
@@ -43,9 +49,21 @@ struct SmallBookView: View {
                             .overlay(Image(systemName: "person").foregroundColor(Color(UIColor.label)).font(.title))
                             .foregroundColor(Color(UIColor.systemBackground)).padding(.horizontal, 3).padding(.bottom, 3).font(.title)
                         Spacer()
+                        BorrowedView(borrowed: book.borrowed!)
+                        Spacer()
+                        Spacer()
                     }
                 }
             }
         }
+    }
+}
+
+struct BorrowedView: View {
+    
+    @ObservedObject var borrowed: Borrowed
+    
+    var body: some View {
+        Text(borrowed.person ?? "").foregroundColor(Color(UIColor.label)).lineLimit(1).font(.subheadline)
     }
 }

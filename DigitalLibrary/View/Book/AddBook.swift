@@ -82,7 +82,7 @@ struct AddBook: View {
                         },
                         content: {
                             if viewModel.inputBook.cover == nil {
-                                Image(systemName: "book.closed").resizable().scaledToFit()
+                                Image(systemName: "book.closed").resizable().scaledToFit().font(Font.title.weight(.ultraLight))
                             } else {
                                 Image(uiImage: viewModel.inputBook.cover!).resizable().scaledToFit()
                             }

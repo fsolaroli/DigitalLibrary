@@ -88,7 +88,7 @@ struct ShelfView: View {
             }
             HStack {
                 Spacer()
-                Image(systemName: "plus.circle").imageScale(.large)
+                Image(systemName: "plus").imageScale(.large)
                 .onTapGesture {
                     showAddBook = true
                 }

@@ -113,7 +113,7 @@ struct ModifyBook: View {
             .navigationBarItems(
                 leading: Button(action: { viewContext.rollback(); presentationMode.wrappedValue.dismiss() }, label: { Text("Annulla") }),
                 trailing: Button(
-                    action: { try? viewContext.save() },
+                    action: { try? viewContext.save(); presentationMode.wrappedValue.dismiss() },
                     label: { Text("Salva") }
                 )
                 .disabled(book.title == ""))

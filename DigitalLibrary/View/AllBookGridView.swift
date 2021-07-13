@@ -23,23 +23,32 @@ struct AllBookGridView: View {
         sortDescriptors: [NSSortDescriptor(keyPath: \Book.title, ascending: true)],
         animation: .default)
     private var books: FetchedResults<Book>
-    @State private var filteredBooks: [Book] = []
+    private var filteredBooks: [Book] {
+        get {
+            if (filter == "") {
+                return Array(books)
+            } else {
+                return books.filter {
+                    $0.title!.searchFormat().contains(filter.searchFormat()) ||
+                    $0.authors?.searchFormat().contains(filter.searchFormat()) ?? false ||
+                    $0.editor?.searchFormat().contains(filter.searchFormat()) ?? false
+                }
+            }
+        }
+    }
     
     var body: some View {
         NavigationView {
             VStack {
                 HStack {
-                    TextField("Filtra libri", text: $filter, onEditingChanged: { changed in
-                        if (!changed) {
-                            withAnimation {
-                                if (filter == "") {
-                                    filteredBooks = Array(books)
-                                } else {
-                                    filteredBooks = filteredBooks.filter { $0.title!.contains(filter) }
-                                }
-                            }
+                    ZStack {
+                        TextField("Filtra libri", text: Binding(get: { filter }, set: { newValue in withAnimation { filter = newValue } }))
+                            .textFieldStyle(RoundedBorderTextFieldStyle()).padding(.horizontal, 3)
+                        HStack {
+                            Spacer()
+                            Button(action: { withAnimation { filter = "" }}, label: { Image(systemName: "xmark.circle") }).padding(.horizontal, 5).foregroundColor(Color(UIColor.label))
                         }
-                    }).textFieldStyle(RoundedBorderTextFieldStyle())
+                    }
                     Spacer()
                     Button(
                         action: {
@@ -55,10 +64,13 @@ struct AllBookGridView: View {
                             }
                         }
                     ).font(.title2)
-                }.padding(.bottom, 1)
+                }.padding(.bottom, 1).padding(.horizontal, 5)
                 Divider()
                 ScrollView(.vertical) {
-                    LazyVGrid(columns: [GridItem(.adaptive(minimum: 100))], spacing: 5) {
+                    if (filteredBooks.isEmpty && !books.isEmpty) {
+                        Text("Nessun libro corrisponde ai criteri della ricerca")
+                    }
+                    LazyVGrid(columns: [GridItem(.adaptive(minimum: 100))], spacing: 10) {
                         ForEach(showFavourites ? filteredBooks.filter { $0.favourite } : filteredBooks) { book in
                             NavigationLink(destination: BookView(viewModel: viewModel, book: book)) {
                                 SmallBookView(book: book)
@@ -68,7 +80,7 @@ struct AllBookGridView: View {
                 }
             }
             .navigationTitle("Libri")
-            .navigationBarItems(trailing: Button(action: { showAddBook = true }, label: { Image(systemName: "plus.circle").imageScale(.large) }))
+            .navigationBarItems(trailing: Button(action: { showAddBook = true }, label: { Image(systemName: "plus").imageScale(.large) }))
         }
         .navigationViewStyle(StackNavigationViewStyle())
         .sheet(
@@ -78,6 +90,5 @@ struct AllBookGridView: View {
                     .environment(\.managedObjectContext, viewContext)
             }
         )
-        .onAppear(perform: { filteredBooks = Array(books) })
     }
 }

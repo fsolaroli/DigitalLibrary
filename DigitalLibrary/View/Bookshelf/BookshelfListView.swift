@@ -52,11 +52,11 @@ struct BookshelfListView: View {
             .navigationBarItems(
                 leading: Button(
                     action: { isEditable.toggle() },
-                    label: { Text(isEditable ? "Fatto" : "Modifica") }),
+                    label: { Text(isEditable ? "Fatto" : "Modifica") }).disabled(bookshelfs.isEmpty),
                 trailing: Button(
                     action: { showAddBookshelf = true },
-                    label: { Image(systemName: "plus.circle").imageScale(.large) }
-                )
+                    label: {Image(systemName: "plus").imageScale(.large) }
+                ) 
             )
             .sheet(isPresented: $showAddBookshelf, content: {
                 AddBookshelf(viewModel: viewModel, nextIndex: bookshelfs.count)
@@ -78,11 +78,5 @@ struct BookshelfListView: View {
     
     func move(from source: IndexSet, to destination: Int) {
         viewModel.move(Array(bookshelfs), from: source.first!, to: destination, viewContext: viewContext)
-    }
-}
-
-struct BookLibraryListView_Previews: PreviewProvider {
-    static var previews: some View {
-        BookshelfListView(viewModel: ManageData())
     }
 }

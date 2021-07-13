@@ -90,7 +90,7 @@ struct ShelfListView: View {
                     showAddShelfView = true
                 },
                 label: {
-                    Image(systemName: "plus.circle").imageScale(.large)
+                    Image(systemName: "plus").imageScale(.large)
                 }
             ))
         .sheet(isPresented: $showAddShelfView, content: {

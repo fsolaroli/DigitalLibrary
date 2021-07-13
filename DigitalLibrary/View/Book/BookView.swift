@@ -22,7 +22,11 @@ struct BookView: View {
     var body: some View {
         ScrollView(.vertical) {
             HStack {
-                Text("\(book.shelf?.bookshelf?.name ?? "Nome libreria") > \(book.shelf?.name ?? "Nome scaffale")").font(.footnote).foregroundColor(Color(UIColor.systemBlue))
+                HStack {
+                    Text("\(book.shelf?.bookshelf?.name ?? "Nome libreria")")
+                    Text(">").foregroundColor(.gray)
+                    Text("\(book.shelf?.name ?? "Nome scaffale")")
+                }.font(.footnote)
                 Spacer()
                 Button(
                     action: {
@@ -85,19 +89,21 @@ struct BookView: View {
                     })
                 ).padding(.horizontal).font(.headline).toggleStyle(SwitchToggleStyle(tint: Color(UIColor.systemBlue)))
                 if (book.borrowed != nil) {
-                    TextField("Persona", text: Binding(
-                        get: { book.borrowed!.person ?? "" },
-                        set: {
-                            book.borrowed!.person = $0;
-                            try? viewContext.save()
-                        }))
-                    DatePicker("Data", selection: Binding(
-                        get: { book.borrowed!.date ?? Date() },
-                        set: {
-                            book.borrowed!.date = $0
-                            try? viewContext.save()
-                        }
-                    ), displayedComponents: .date)
+                    VStack {
+                        TextField("Persona", text: Binding(
+                                    get: { book.borrowed?.person ?? "" },
+                                    set: {
+                                        book.borrowed!.person = $0;
+                                        try? viewContext.save()
+                                    }))
+                        DatePicker("Data", selection: Binding(
+                            get: { book.borrowed?.date ?? Date() },
+                            set: {
+                                book.borrowed!.date = $0
+                                try? viewContext.save()
+                            }
+                        ), displayedComponents: .date)
+                    }.padding(.horizontal)
                 }
             }
             Divider()
@@ -127,6 +133,7 @@ struct BookView: View {
                  }
             ).padding(40)
         }
+        .onDisappear(perform: { try? viewContext.save() })
         .navigationBarTitleDisplayMode(.inline)
         .navigationBarItems(trailing: Button(action: { showEditBook = true }, label: { Text("Modifica") }))
         .sheet(isPresented: $showEditBook, onDismiss: { viewContext.rollback() }) {
