@@ -33,7 +33,7 @@ struct SmallShelfView: View {
                     Text(shelf.name ?? "Nome Scaffale").font(.title2)
                     Spacer()
                 }
-            }
+            }.padding(.top, 6)
             ScrollView(.horizontal) {
                 LazyHStack {
                     ForEach(books) { book in

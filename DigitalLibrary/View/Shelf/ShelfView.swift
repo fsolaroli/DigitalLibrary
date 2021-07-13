@@ -16,6 +16,8 @@ struct ShelfView: View {
     @State private var isEditable = false
     @State var showAddBook = false
     
+    @State var itemToRemove: Book? = nil
+    
     @ObservedObject var shelf: Shelf
     
     var books: [Book] {
@@ -46,7 +48,7 @@ struct ShelfView: View {
                             if let coverData = book.cover, let coverImage = UIImage(data: coverData){
                                 Image(uiImage: coverImage).resizable().scaledToFit()
                             } else {
-                                Image(systemName: "book.closed").resizable().scaledToFit()
+                                Image(systemName: "book.closed").resizable().font(Font.title.weight(.ultraLight)).scaledToFit()
                             }
                         }.frame(width: 50, height: 50)
                         Text(book.title ?? "").lineLimit(2)
@@ -81,12 +83,10 @@ struct ShelfView: View {
                 }
             }
             .onDelete(perform: { indexSet in
-                var itemsToRemove = [Book]()
-                for indexToRemove in indexSet {
-                    itemsToRemove.append((shelf.books?.object(at: indexToRemove)) as! Book)
-                } // FIXME: - Incorrect delete probably caused by disallignment in index when moving
-
-                viewModel.delete(itemsToRemove, viewContext: viewContext)
+                itemToRemove = books[indexSet.first!]
+                if let itemToRemove = itemToRemove {
+                    viewModel.delete(itemToRemove, viewContext: viewContext)
+                }
             })
             .onMove(perform: move)
         }
@@ -106,11 +106,7 @@ struct ShelfView: View {
                             label: { Image(systemName: "plus"); Text("Aggiungi Libro") }
                         )
                     }
-                    label: {
-                        HStack {
-                            Image(systemName: "ellipsis").imageScale(.large)
-                        }.frame(width: 40, height: 60)
-                    }
+                    label: { Image(systemName: "ellipsis").imageScale(.large).frame(width: 40, height: 60) }
                 } else {
                     Button(action: { isEditable.toggle() }, label: { Text("Fatto") })
                 }

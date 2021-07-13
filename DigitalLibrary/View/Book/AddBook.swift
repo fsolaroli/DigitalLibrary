@@ -126,7 +126,7 @@ struct AddBook: View {
                     action: {
                         viewModel.addBook(
                             shelf: shelf!,
-                            index: shelf?.books?.count ?? 0,
+                            index: shelf!.books?.count ?? 0,
                             viewContext: viewContext
                         )
                         presentationMode.wrappedValue.dismiss()

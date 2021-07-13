@@ -90,11 +90,7 @@ struct ShelfListView: View {
                             label: { Image(systemName: "plus"); Text("Aggiungi Scaffale") }
                         )
                     }
-                    label: {
-                        HStack {
-                            Image(systemName: "ellipsis").imageScale(.large)
-                        }.frame(width: 40, height: 60)
-                    }
+                    label: { Image(systemName: "ellipsis").imageScale(.large).frame(width: 40, height: 60) }
                 } else {
                     Button(action: { isEditable.toggle() }, label: { Text("Fatto") })
                 }

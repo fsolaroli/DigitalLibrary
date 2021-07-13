@@ -179,8 +179,10 @@ class ManageData: ObservableObject {
     }
     
     func delete<I: NSManagedObject>(_ item: I, viewContext: NSManagedObjectContext) {
-        viewContext.delete(item)
-        try? viewContext.save()
+        withAnimation {
+            viewContext.delete(item)
+            try? viewContext.save()
+        }
     }
     
     func delete<I: NSManagedObject>(_ items: [I], viewContext: NSManagedObjectContext) {
