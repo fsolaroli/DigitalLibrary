@@ -15,7 +15,6 @@ struct AllBookGridView: View {
     
     @State var showAddBook = false
     @State var showFavourites = false
-    
     @State var filter = ""
    
     @FetchRequest(
@@ -23,6 +22,7 @@ struct AllBookGridView: View {
         sortDescriptors: [NSSortDescriptor(keyPath: \Book.title, ascending: true)],
         animation: .default)
     private var books: FetchedResults<Book>
+    
     private var filteredBooks: [Book] {
         get {
             if (filter == "") {
@@ -46,16 +46,15 @@ struct AllBookGridView: View {
                             .textFieldStyle(RoundedBorderTextFieldStyle()).padding(.horizontal, 3)
                         HStack {
                             Spacer()
-                            Button(action: { withAnimation { filter = "" }}, label: { Image(systemName: "xmark.circle") }).padding(.horizontal, 5).foregroundColor(Color(UIColor.label))
+                            Button(
+                                action: { withAnimation { filter = "" }},
+                                label: { Image(systemName: "xmark").frame(width: 50, height: 50, alignment: .center) }
+                            ).foregroundColor(Color(UIColor.label))
                         }
                     }
                     Spacer()
                     Button(
-                        action: {
-                            withAnimation {
-                                showFavourites.toggle()                                
-                            }
-                        },
+                        action: { withAnimation { showFavourites.toggle() }},
                         label: {
                             if (showFavourites) {
                                 Image(systemName: "heart.fill").foregroundColor(.red)
@@ -86,10 +85,7 @@ struct AllBookGridView: View {
         .navigationViewStyle(StackNavigationViewStyle())
         .sheet(
             isPresented: $showAddBook, onDismiss: { viewModel.resetInputBook() },
-            content: {
-                AddBook(viewModel: viewModel)
-                    .environment(\.managedObjectContext, viewContext)
-            }
+            content: { AddBook(viewModel: viewModel).environment(\.managedObjectContext, viewContext) }
         )
     }
 }

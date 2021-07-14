@@ -31,13 +31,15 @@ struct BarcodeScannerView: View {
             HStack {
                 Button(action: { disableAll(); viewModel.resetNewInputBook() }, label: { Text("Annulla") })
                 Spacer()
-                Button(action: { disableAll(); viewModel.inputBook = viewModel.newInputBook; viewModel.resetNewInputBook() }, label: { Text("Conferma") }).disabled(showPreview == false || viewModel.notFound)
+                Button(action: { disableAll(); viewModel.inputBook = viewModel.newInputBook; viewModel.resetNewInputBook() }, label: { Text("Conferma") })
+                    .disabled(showPreview == false  || viewModel.notFound)
             }.padding(.horizontal).padding(.top)
 
             TextField("ISBN", text: $viewModel.newInputBook.ISBN, onEditingChanged: { changed in
                 if (!changed) {
                     viewModel.getBookDataFromISBN(isbn: viewModel.newInputBook.ISBN)
                 }
+                showPreview = viewModel.newInputBook.ISBN != ""
             })
             .textFieldStyle(RoundedBorderTextFieldStyle()).padding(.horizontal).keyboardType(.numberPad)
             

@@ -18,6 +18,28 @@ class ManageData: ObservableObject {
     
     @Published var notFound = false
     
+    init(viewContext: NSManagedObjectContext) {
+        if (UserDefaults.standard.object(forKey: "newUser") as? Bool ?? true) {
+            let newBookshelf = addBookshelf(name: "La mia prima libreria", index: 0, viewContext: viewContext)
+            inputBook.title = "Primo LIbro"
+            addBook(shelf: newBookshelf.shelfs![0] as! Shelf, index: 0, viewContext: viewContext)
+            UserDefaults.standard.set(false, forKey: "newUser")
+        }
+    }
+    
+    func numberOfBooks(in bookshelf: Bookshelf) -> String {
+        var numberOfBooks = 0
+        if let shelfs = bookshelf.shelfs {
+            for shelf in shelfs {
+                if let books = (shelf as! Shelf).books {
+                    numberOfBooks += books.count
+                }
+            }
+        }
+        
+        return String(numberOfBooks)
+    }
+    
     func getBookDataFromISBN(isbn: String) {
         notFound = false
         newInputBook = InputBook()
@@ -60,6 +82,8 @@ class ManageData: ObservableObject {
                 }
             }
             task.resume()
+        } else {
+            self.notFound = true
         }
     }
     
@@ -71,12 +95,14 @@ class ManageData: ObservableObject {
         self.newInputBook = InputBook()
     }
     
-    func addBookshelf(name: String, index: Int, viewContext: NSManagedObjectContext) {
+    func addBookshelf(name: String, index: Int, viewContext: NSManagedObjectContext) -> Bookshelf {
         withAnimation {
             let newBookshelf = Bookshelf(context: viewContext)
             newBookshelf.name = name
             newBookshelf.index = Int64(index)
+            addShelf(name: "Primo scaffale", index: 0, bookshelf: newBookshelf, viewContext: viewContext)
             try? viewContext.save()
+            return newBookshelf
         }
     }
     
@@ -117,7 +143,7 @@ class ManageData: ObservableObject {
             shelf.addToBooks(newBook)
             
             try? viewContext.save()
-            inputBook = InputBook()
+            resetInputBook()
         }
     }
     

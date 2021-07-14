@@ -10,15 +10,12 @@ import SwiftUI
 struct ModifyBook: View {
     
     @ObservedObject var viewModel: ManageData
+    @ObservedObject var book: Book
     
     @Environment(\.managedObjectContext) private var viewContext
-    
     @Environment(\.presentationMode) var presentationMode
 
-    @ObservedObject var book: Book
-
     @State var showCoverScanner = false
-
     @State var bookshelf: Bookshelf
     
     @FetchRequest(

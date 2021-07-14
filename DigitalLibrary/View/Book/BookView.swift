@@ -122,13 +122,9 @@ struct BookView: View {
                     }
                     .font(.title2)
                     .foregroundColor(Color.red)
-                    .padding(.horizontal, 8)
-                    .padding(.vertical, 5)
+                    .padding(.horizontal, 8).padding(.vertical, 5)
                     .cornerRadius(40)
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 40)
-                            .stroke(Color.red, lineWidth: 2)
-                    )
+                    .overlay(RoundedRectangle(cornerRadius: 40).stroke(Color.red, lineWidth: 2))
                  }
             ).padding(40)
         }

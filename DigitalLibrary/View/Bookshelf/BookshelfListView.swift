@@ -15,7 +15,6 @@ struct BookshelfListView: View {
     
     @State private var isEditable = false
     @State var showAddBookshelf = false
-    
     @State var showAlert = false;
     @State var itemToRemove: Bookshelf? = nil
       
@@ -30,7 +29,14 @@ struct BookshelfListView: View {
             List {
                 ForEach(bookshelfs) { bookshelf in
                     NavigationLink(destination: ShelfListView(viewModel: viewModel, bookshelf: bookshelf).environment(\.managedObjectContext, viewContext)) {
-                        Text(bookshelf.name!).font(.title2)
+                        HStack {
+                            Text(bookshelf.name!).font(.title2)
+                            Spacer()
+                            HStack {
+                                Image(systemName: "book")
+                                Text(viewModel.numberOfBooks(in: bookshelf))
+                            }
+                        }
                     }
                 }
                 .onMove(perform: move)
@@ -61,16 +67,14 @@ struct BookshelfListView: View {
                                 action: { showAddBookshelf = true },
                                 label: { Image(systemName: "plus"); Text("Aggiungi Libreria") }
                             )
-                        }
-                        label: { Image(systemName: "ellipsis").imageScale(.large).frame(width: 40, height: 60) }
+                        } label: { Image(systemName: "ellipsis").imageScale(.large).frame(width: 40, height: 60) }
                     } else {
                         Button(action: { isEditable.toggle() }, label: { Text("Fatto") }).disabled(bookshelfs.isEmpty)
                     }
                 }
             }
             .sheet(isPresented: $showAddBookshelf, content: {
-                AddBookshelf(viewModel: viewModel, nextIndex: bookshelfs.count)
-                    .environment(\.managedObjectContext, viewContext)
+                AddBookshelf(viewModel: viewModel, nextIndex: bookshelfs.count).environment(\.managedObjectContext, viewContext)
             })
             .alert(isPresented: $showAlert) { Alert(
                 title: Text("Attenzione"),

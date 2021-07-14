@@ -10,15 +10,13 @@ import SwiftUI
 struct ShelfView: View {
     
     @ObservedObject var viewModel: ManageData
+    @ObservedObject var shelf: Shelf
     
     @Environment(\.managedObjectContext) private var viewContext
     
     @State private var isEditable = false
     @State var showAddBook = false
-    
     @State var itemToRemove: Book? = nil
-    
-    @ObservedObject var shelf: Shelf
     
     var books: [Book] {
         get {

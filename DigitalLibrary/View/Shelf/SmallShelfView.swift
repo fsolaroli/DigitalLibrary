@@ -10,10 +10,9 @@ import SwiftUI
 struct SmallShelfView: View {
     
     @ObservedObject var viewModel: ManageData
-    
-    @Environment(\.managedObjectContext) private var viewContext
-    
     @ObservedObject var shelf: Shelf
+    
+    @Environment(\.managedObjectContext) private var viewContext    
     
     var books: [Book] {
         get {

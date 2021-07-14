@@ -13,7 +13,6 @@ struct AddBookshelf: View {
     var nextIndex: Int
     
     @Environment(\.managedObjectContext) private var viewContext
-    
     @Environment(\.presentationMode) var presentationMode
     
     @State var name = ""
@@ -30,7 +29,7 @@ struct AddBookshelf: View {
                 leading: Button(action: { presentationMode.wrappedValue.dismiss() }, label: { Text("Annulla") }),
                 trailing: Button(
                     action: {
-                        viewModel.addBookshelf(name: name, index: nextIndex, viewContext: viewContext)
+                        _ = viewModel.addBookshelf(name: name, index: nextIndex, viewContext: viewContext)
                         presentationMode.wrappedValue.dismiss()
                     },
                     label: { Text("Aggiungi") }

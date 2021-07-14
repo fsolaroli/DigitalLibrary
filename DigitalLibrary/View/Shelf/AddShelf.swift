@@ -36,8 +36,7 @@ struct AddShelf: View {
                         presentationMode.wrappedValue.dismiss()
                     },
                     label: { Text("Aggiungi") }
-                )
-                .disabled(name == "")
+                ).disabled(name == "")
             )
         }
     }

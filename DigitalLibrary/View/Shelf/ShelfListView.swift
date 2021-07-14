@@ -10,16 +10,15 @@ import SwiftUI
 struct ShelfListView: View {
     
     @ObservedObject var viewModel: ManageData
+    @ObservedObject var bookshelf: Bookshelf
     
     @Environment(\.managedObjectContext) private var viewContext
     
     @State private var isEditable = false
     @State var showAddShelfView = false
-    
     @State var showAlert = false;
     @State var itemToRemove: Shelf? = nil
     
-    @ObservedObject var bookshelf: Bookshelf
     
     var shelfs: [Shelf] {
         get {

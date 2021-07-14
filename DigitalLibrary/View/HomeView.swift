@@ -12,25 +12,16 @@ struct HomeView: View {
     @ObservedObject var viewModel: ManageData
     
     @Environment(\.managedObjectContext) private var viewContext
-    
-    @State private var tabSelection = 1
-   
-    @State private var tappedTwice: Bool = false
-
-    @State private var libraries = UUID()
-    @State private var books = UUID()
 
     var body: some View {
         TabView {
-            BookshelfListView(viewModel: viewModel).tabItem {
-                Label("Librerie", systemImage: "books.vertical.fill")
-            }
-            .environment(\.managedObjectContext, viewContext)
+            BookshelfListView(viewModel: viewModel)
+                .tabItem { Label("Librerie", systemImage: "books.vertical.fill") }
+                .environment(\.managedObjectContext, viewContext)
 
-            AllBookGridView(viewModel: viewModel).tabItem {
-                Label("Libri", systemImage: "square.grid.2x2.fill")
-            }
-            .environment(\.managedObjectContext, viewContext)
+            AllBookGridView(viewModel: viewModel)
+                .tabItem { Label("Libri", systemImage: "square.grid.2x2.fill") }
+                .environment(\.managedObjectContext, viewContext)
         }
     }
 }
