@@ -18,6 +18,12 @@ struct ShelfView: View {
     @State var showAddBook = false
     @State var itemToRemove: Book? = nil
     
+    @FetchRequest(
+        entity: Bookshelf.entity(),
+        sortDescriptors: [NSSortDescriptor(keyPath: \Bookshelf.index, ascending: true)],
+        animation: .default)
+    private var bookshelfs: FetchedResults<Bookshelf>
+    
     var books: [Book] {
         get {
             var books:[Book] = []
@@ -37,6 +43,25 @@ struct ShelfView: View {
                     try? viewContext.save()
                 }
             )).textFieldStyle(RoundedBorderTextFieldStyle()).font(.title).padding()
+            Form {
+                Picker(selection: Binding<Bookshelf>(
+                    get: { shelf.bookshelf! },
+                    set: {
+                        if ($0 != shelf.bookshelf) {
+                            shelf.index = Int64($0.shelfs?.count ?? 0)
+                        }
+                        shelf.bookshelf = $0
+                        try? viewContext.save()
+                    }
+                ), label: Text("Scaffale"), content: {
+                    ForEach(Array(bookshelfs)) { bookshelf in
+                        Text(bookshelf.name!).tag(bookshelf)
+                    }
+                })
+            }
+            .padding(.top, -24.0)
+            .frame(height: 55.0)
+            
         }
         List {
             ForEach(books) { book in
@@ -60,19 +85,19 @@ struct ShelfView: View {
                                 Spacer()
                                 HStack {
                                     Text("Autore: ").fontWeight(.bold)
-                                    Text(book.authors ?? "")
+                                    Text(book.authors ?? "").lineLimit(1)
                                 }
                                 HStack {
                                     Text("Casa editrice: ").fontWeight(.bold)
-                                    Text(book.editor ?? "")
+                                    Text(book.editor ?? "").lineLimit(1)
                                 }
                                 HStack {
                                     Text("Anno di pubblicazione: ").fontWeight(.bold)
-                                    Text(book.publishDate != 0 ?  String(book.publishDate) : "")
+                                    Text(book.publishDate != 0 ?  String(book.publishDate) : "").lineLimit(1)
                                 }
                                 HStack {
                                     Text("Numero di pagine: ").fontWeight(.bold)
-                                    Text(book.pageCount != 0 ? String(book.pageCount) : "")
+                                    Text(book.pageCount != 0 ? String(book.pageCount) : "").lineLimit(1)
                                 }
                                 Spacer()
                             }.font(.caption).padding(.horizontal, 10)
