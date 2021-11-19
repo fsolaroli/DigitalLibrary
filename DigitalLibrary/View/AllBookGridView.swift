@@ -31,7 +31,8 @@ struct AllBookGridView: View {
                 return books.filter {
                     $0.title!.searchFormat().contains(filter.searchFormat()) ||
                     $0.authors?.searchFormat().contains(filter.searchFormat()) ?? false ||
-                    $0.editor?.searchFormat().contains(filter.searchFormat()) ?? false
+                    $0.editor?.searchFormat().contains(filter.searchFormat()) ?? false ||
+                    (String($0.publishDate) == filter)
                 }
             }
         }

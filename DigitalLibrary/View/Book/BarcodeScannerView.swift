@@ -100,11 +100,12 @@ struct BarcodeScannerView: View {
                     HStack {
                         Button(
                             action: { torchIsOn.toggle() },
-                            label: { Image(systemName: torchIsOn ? "flashlight.on.fill" : "flashlight.off.fill")
-                                .padding()
-                                .background(Color(UIColor.systemBackground))
+                            label: { Image(systemName: withAnimation {torchIsOn ? "flashlight.on.fill" : "flashlight.off.fill"})
+                                .padding(20)
+                                .background(torchIsOn ? Color.white : Color(UIColor.systemBackground))
+                                .foregroundColor(withAnimation {torchIsOn ? Color.black : Color.white})
                                 .clipShape(Circle())
-                                .font(.largeTitle)
+                                .font(Font.title.weight(.ultraLight))
                             }
                             
                         )

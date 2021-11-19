@@ -32,10 +32,6 @@ struct ModifyBook: View {
         }
     }
     
-    var alert: Alert {
-        Alert(title: Text("Nessun risultato trovato"), message: Text("L'ISBN inserito non esiste o non è presente nel database di Google Books"), dismissButton: .default(Text("OK")))
-    }
-    
     var body: some View {
         NavigationView {
             Form {
@@ -47,7 +43,12 @@ struct ModifyBook: View {
                     })
                     Picker(selection: Binding<Shelf>(
                         get: { book.shelf! },
-                        set: { book.shelf = $0 }
+                        set: {
+                            if ($0 != book.shelf) {
+                                book.index = Int64($0.books?.count ?? 0)
+                            }
+                            book.shelf = $0
+                        }
                     ), label: Text("Scaffale"), content: {
                         ForEach(shelfs) { shelf in
                             Text(shelf.name!).tag(shelf)
@@ -115,12 +116,6 @@ struct ModifyBook: View {
                 )
                 .disabled(book.title == ""))
         }
-        .alert(isPresented: Binding<Bool>(
-            get: { viewModel.notFound },
-            set: { viewModel.notFound = $0 }
-        ), content: { self.alert })
-        .onDisappear(perform: {viewModel.resetInputBook()})
-        
         .sheet(isPresented: $showCoverScanner, content: {
             ScannerCoverView { result in
                 switch result {

@@ -44,6 +44,7 @@ struct AddBook: View {
     func disableAll() {
         torchIsOn = false
         showBarcodeScanner = false
+        try? viewContext.save()
     }
     
     var body: some View {
