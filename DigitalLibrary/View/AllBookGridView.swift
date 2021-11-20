@@ -109,7 +109,7 @@ struct AllBookGridView: View {
                                 withAnimation {
                                     VStack {
                                         HStack {
-                                            Text(category)
+                                            Text(category).font(.title2)
                                         }
                                         LazyVGrid(columns: [GridItem(.adaptive(minimum: 100))], spacing: 10) {
                                             ForEach(books) { book in
@@ -118,8 +118,7 @@ struct AllBookGridView: View {
                                                 }
                                             }
                                         }
-                                    }
-                                    
+                                    }.padding(.bottom, 20)
                                 }
                             }
                         }
