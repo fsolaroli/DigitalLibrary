@@ -64,8 +64,8 @@ struct ShelfListView: View {
         .alert(isPresented: $showAlert) { Alert(
             title: Text("Attenzione"),
             message: Text("Cancellando lo scaffale si cancelleranno i libri al suo interno"),
-            primaryButton: .destructive(Text("Annulla")) { self.itemToRemove = nil },
-            secondaryButton: .destructive(Text("Continua")) {
+            primaryButton: .default(Text("Annulla")) { self.itemToRemove = nil },
+            secondaryButton: .destructive(Text("Conferma")) {
                 if let itemToRemove = itemToRemove {
                     viewModel.delete(itemToRemove, viewContext: viewContext)
                     self.itemToRemove = nil
