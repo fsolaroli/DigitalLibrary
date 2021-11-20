@@ -17,6 +17,7 @@ struct BookView: View {
     
     @ObservedObject var book: Book
     
+    @State var showAlert = false;
     @State var showEditBook = false
     
     var body: some View {
@@ -108,8 +109,7 @@ struct BookView: View {
             Divider()
             Button(
                 action: {
-                    viewModel.delete([book], viewContext: viewContext)
-                    presentationMode.wrappedValue.dismiss()
+                    showAlert = true
                 },
                 label: {
                     HStack {
@@ -135,5 +135,14 @@ struct BookView: View {
             ModifyBook(viewModel: viewModel, book: book, bookshelf: book.shelf!.bookshelf!)
                 .environment(\.managedObjectContext, viewContext)
         }
+        .alert(isPresented: $showAlert) { Alert(
+            title: Text("Attenzione"),
+            message: Text("Confermare la cancellazione del libro"),
+            primaryButton: .default(Text("Annulla")) { },
+            secondaryButton: .destructive(Text("Conferma")) {
+                viewModel.delete([book], viewContext: viewContext)
+                presentationMode.wrappedValue.dismiss()
+            }
+        )}
     }
 }
