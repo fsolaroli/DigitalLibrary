@@ -7,15 +7,45 @@
 
 import SwiftUI
 
+enum Orders {
+    case ALPHABETIC
+    case AUTHOR
+    case DATE
+    
+    func group (_ b: Book) -> String {
+        switch self {
+            case .ALPHABETIC:
+                return b.title?.first?.description ?? ""
+            case .AUTHOR:
+                return b.authors ?? ""
+            case .DATE:
+                return String(b.publishDate)
+        }
+    }
+    
+    func label () -> Label<Text, Image> {
+        switch self {
+            case .ALPHABETIC:
+                return Label("Alfabetico", systemImage: "abc")
+            case .AUTHOR:
+                return Label("Autore", systemImage: "person.fill")
+            case .DATE:
+                return Label("Pubblicazione", systemImage: "calendar")
+
+        }
+    }
+}
+
 struct AllBookGridView: View {
     
     @ObservedObject var viewModel: ManageData
     
     @Environment(\.managedObjectContext) private var viewContext
-    
+
     @State var showAddBook = false
     @State var showFavourites = false
     @State var filter = ""
+    @State var order = Orders.ALPHABETIC
    
     @FetchRequest(
         entity: Book.entity(),
@@ -23,18 +53,21 @@ struct AllBookGridView: View {
         animation: .default)
     private var books: FetchedResults<Book>
     
-    private var filteredBooks: [Book] {
+    private var groupedBooks: Dictionary<String, [Book]> {
         get {
-            if (filter == "") {
-                return Array(books)
-            } else {
-                return books.filter {
+            var toShow: [Book] = Array(books)
+            if (showFavourites) {
+                toShow = toShow.filter({$0.favourite})
+            }
+            if (filter != "") {
+                toShow = toShow.filter {
                     $0.title!.searchFormat().contains(filter.searchFormat()) ||
                     $0.authors?.searchFormat().contains(filter.searchFormat()) ?? false ||
                     $0.editor?.searchFormat().contains(filter.searchFormat()) ?? false ||
                     (String($0.publishDate) == filter)
                 }
             }
+            return Dictionary(grouping: toShow, by: {order.group($0)})
         }
     }
     
@@ -67,13 +100,27 @@ struct AllBookGridView: View {
                 }.padding(.bottom, 1).padding(.horizontal, 5).padding(.top, 10)
                 Divider()
                 ScrollView(.vertical) {
-                    if (filteredBooks.isEmpty && !books.isEmpty) {
+                    if (groupedBooks.isEmpty && !books.isEmpty) {
                         Text("Nessun libro corrisponde ai criteri della ricerca")
                     }
-                    LazyVGrid(columns: [GridItem(.adaptive(minimum: 100))], spacing: 10) {
-                        ForEach(showFavourites ? filteredBooks.filter { $0.favourite } : filteredBooks) { book in
-                            NavigationLink(destination: BookView(viewModel: viewModel, book: book)) {
-                                SmallBookView(book: book)
+                    withAnimation {
+                        VStack {
+                            ForEach(groupedBooks.sorted(by: { $0.0 < $1.0 }), id: \.key) {category, books in
+                                withAnimation {
+                                    VStack {
+                                        HStack {
+                                            Text(category)
+                                        }
+                                        LazyVGrid(columns: [GridItem(.adaptive(minimum: 100))], spacing: 10) {
+                                            ForEach(books) { book in
+                                                NavigationLink(destination: BookView(viewModel: viewModel, book: book)) {
+                                                    SmallBookView(book: book)
+                                                }
+                                            }
+                                        }
+                                    }
+                                    
+                                }
                             }
                         }
                     }
@@ -81,7 +128,26 @@ struct AllBookGridView: View {
             }
             .navigationTitle("Libri")
             .navigationBarTitleDisplayMode(.inline)
-            .navigationBarItems(trailing: Button(action: { showAddBook = true }, label: { Image(systemName: "plus").imageScale(.large) }))
+            .navigationBarItems(
+                leading: Menu(
+                    content: {
+                        Button(
+                            action: { order = Orders.ALPHABETIC },
+                            label: { Orders.ALPHABETIC.label() }
+                        )
+                        Button(
+                            action: { order = Orders.AUTHOR },
+                            label: { Orders.AUTHOR.label() }
+                        )
+                        Button(
+                            action: { order = Orders.DATE },
+                            label: { Orders.DATE.label() }
+                        )
+                    },
+                    label: { order.label().imageScale(.large) }
+                ),
+                trailing: Button(action: { showAddBook = true }, label: { Image(systemName: "plus").imageScale(.large) })
+            )
         }
         .navigationViewStyle(StackNavigationViewStyle())
         .sheet(
