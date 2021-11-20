@@ -135,14 +135,16 @@ struct BookView: View {
             ModifyBook(viewModel: viewModel, book: book, bookshelf: book.shelf!.bookshelf!)
                 .environment(\.managedObjectContext, viewContext)
         }
-        .alert(isPresented: $showAlert) { Alert(
-            title: Text("Attenzione"),
-            message: Text("Confermare la cancellazione del libro"),
-            primaryButton: .default(Text("Annulla")) { },
-            secondaryButton: .destructive(Text("Conferma")) {
+        .alert("Attenzione", isPresented: $showAlert) {
+            Button(role: .destructive) {
                 viewModel.delete([book], viewContext: viewContext)
                 presentationMode.wrappedValue.dismiss()
+            } label: {
+                Text("Conferma")
             }
-        )}
+            Button("Annulla", role: .cancel) { }
+        } message: {
+            Text("Confermare la cancellazione del libro")
+        }
     }
 }

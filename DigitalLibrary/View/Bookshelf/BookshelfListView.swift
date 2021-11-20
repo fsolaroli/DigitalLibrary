@@ -76,17 +76,19 @@ struct BookshelfListView: View {
             .sheet(isPresented: $showAddBookshelf, content: {
                 AddBookshelf(viewModel: viewModel, nextIndex: bookshelfs.count).environment(\.managedObjectContext, viewContext)
             })
-            .alert(isPresented: $showAlert) { Alert(
-                title: Text("Attenzione"),
-                message: Text("Cancellando la libreria si cancelleranno anche gli scaffali e i libri al suo interno"),
-                primaryButton: .default(Text("Annulla")) { self.itemToRemove = nil },
-                secondaryButton: .destructive(Text("Conferma")) {
+            .alert("Attenzione", isPresented: $showAlert) {
+                Button(role: .destructive) {
                     if let itemToRemove = itemToRemove {
                         viewModel.delete(itemToRemove, viewContext: viewContext)
                         self.itemToRemove = nil
                     }
+                } label: {
+                    Text("Conferma")
                 }
-            )}
+                Button("Annulla", role: .cancel) { self.itemToRemove = nil }
+            } message: {
+                Text("Cancellando la libreria si cancelleranno anche gli scaffali e i libri al suo interno")
+            }
         }.navigationViewStyle(StackNavigationViewStyle())
     }
     
