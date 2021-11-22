@@ -15,14 +15,26 @@ struct ShelfView: View {
     @Environment(\.managedObjectContext) private var viewContext
     
     @State private var isEditable = false
-    @State var showAddBook = false
-    @State var itemToRemove: Book? = nil
+    @State private var showAddBook = false
+    @State private var showMoveBooks = false
+    @State private var itemToRemove: Book? = nil
+
+    @State private var bookshelfToMove: Bookshelf? = nil
+    @State private var shelfToMove: Shelf? = nil
     
     @FetchRequest(
         entity: Bookshelf.entity(),
         sortDescriptors: [NSSortDescriptor(keyPath: \Bookshelf.index, ascending: true)],
         animation: .default)
     private var bookshelfs: FetchedResults<Bookshelf>
+    
+    var shelfs: [Shelf] {
+        get {
+            var shelfs:[Shelf] = []
+            bookshelfToMove?.shelfs!.forEach({ s in shelfs.append(s as! Shelf)})
+            return shelfs.sorted(by: {s1, s2 in s1.index < s2.index})
+        }
+    }
     
     var books: [Book] {
         get {
@@ -63,6 +75,7 @@ struct ShelfView: View {
             .frame(height: 55.0)
             
         }
+        
         List {
             ForEach(books) { book in
                 if (isEditable) {
@@ -74,14 +87,14 @@ struct ShelfView: View {
                                 Image(systemName: "book.closed").resizable().font(Font.title.weight(.ultraLight)).scaledToFit()
                             }
                         }.frame(width: 50, height: 50)
-                        Text(book.title ?? "").lineLimit(2)
+                        Text((book.title ?? "") /*debug*/ + " - " + String(book.index)/*debug*/).lineLimit(2)
                     }
                 } else {
                     NavigationLink(destination: BookView(viewModel: viewModel, book: book).environment(\.managedObjectContext, viewContext)) {
                         HStack {
                             SmallBookView(book: book).frame(width: 100, height: 150)
                             VStack(alignment: .leading) {
-                                Text(book.title ?? "").font(.title3).padding()
+                                Text((book.title ?? "") /*debug*/ + " - " + String(book.index) /*debug*/).font(.title3).padding()
                                 Spacer()
                                 HStack {
                                     Text("Autore: ").fontWeight(.bold)
@@ -93,7 +106,7 @@ struct ShelfView: View {
                                 }
                                 HStack {
                                     Text("Anno di pubblicazione: ").fontWeight(.bold)
-                                    Text(book.publishDate != 0 ?  String(book.publishDate) : "").lineLimit(1)
+                                    Text(book.publishDate != 0 ? String(book.publishDate) : "").lineLimit(1)
                                 }
                                 HStack {
                                     Text("Numero di pagine: ").fontWeight(.bold)
@@ -108,25 +121,30 @@ struct ShelfView: View {
             .onDelete(perform: { indexSet in
                 itemToRemove = books[indexSet.first!]
                 if let itemToRemove = itemToRemove {
-                    viewModel.delete(itemToRemove, viewContext: viewContext)
+                    viewModel.delete(itemToRemove, from: books, viewContext: viewContext)
                 }
             })
             .onMove(perform: move)
         }
         .environment(\.editMode, .constant(isEditable ? .active : .inactive))
-        .navigationTitle(isEditable ? "" : shelf.name ?? "Nome Libreria")
+        .navigationTitle(!isEditable ? shelf.name ?? "Nome Libreria" : "")
         .navigationBarTitleDisplayMode(isEditable ? .inline : .automatic)
         .toolbar {
             ToolbarItem(placement: .primaryAction) {
-                if !isEditable {
+                if (!isEditable) {
                     Menu {
+                        /*debug*/Button(action: { viewModel.fix(books, viewContext: viewContext) }, label: { Text("FIX") })/*debug*/
                         Button(
-                            action: { if(isEditable) { try? viewContext.save() }; isEditable.toggle() },
-                            label: { Image(systemName: "list.bullet"); Text("Modifica Scaffale") }
+                            action: { isEditable.toggle() },
+                            label:  { Image(systemName: "list.bullet"); Text("Modifica Scaffale") }
+                        )
+                        Button(
+                            action: { showMoveBooks.toggle() },
+                            label:  { Image(systemName: "checkmark.circle"); Text("Muovi libri") }
                         )
                         Button(
                             action: { showAddBook = true },
-                            label: { Image(systemName: "plus"); Text("Aggiungi Libro") }
+                            label:  { Image(systemName: "plus"); Text("Aggiungi Libro") }
                         )
                     }
                     label: { Image(systemName: "ellipsis").imageScale(.large).frame(width: 40, height: 60) }
@@ -139,6 +157,13 @@ struct ShelfView: View {
             isPresented: $showAddBook, onDismiss: { viewModel.resetInputBook() },
             content: {
                 AddBook(viewModel: viewModel, bookshelf: shelf.bookshelf!, shelf: shelf)
+                    .environment(\.managedObjectContext, viewContext)
+            }
+        )
+        .sheet(
+            isPresented: $showMoveBooks, onDismiss: { },
+            content: {
+                MoveBooks(viewModel: viewModel, bookshelf: shelf.bookshelf!, shelf: shelf, books: books)
                     .environment(\.managedObjectContext, viewContext)
             }
         )

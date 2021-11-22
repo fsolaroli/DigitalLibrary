@@ -20,6 +20,14 @@ struct BookView: View {
     @State var showAlert = false;
     @State var showEditBook = false
     
+    var books: [Book] {
+        get {
+            var books:[Book] = []
+            book.shelf!.books?.forEach({ b in books.append(b as! Book)})
+            return books.sorted(by: {b1, b2 in b1.index < b2.index})
+        }
+    }
+    
     var body: some View {
         ScrollView(.vertical) {
             HStack {
@@ -108,23 +116,13 @@ struct BookView: View {
             }
             Divider()
             Button(
+                role: .destructive,
                 action: {
                     showAlert = true
                 },
                 label: {
-                    HStack {
-                        Image(systemName: "trash")
-                            .renderingMode(.template)
-                            .foregroundColor(Color.red)
-                        
-                        Text("Rimuovi Libro")
-                            .foregroundColor(Color.red)
-                    }
+                    Label("Rimuovi libro", systemImage: "trash")
                     .font(.title2)
-                    .foregroundColor(Color.red)
-                    .padding(.horizontal, 8).padding(.vertical, 5)
-                    .cornerRadius(40)
-                    .overlay(RoundedRectangle(cornerRadius: 40).stroke(Color.red, lineWidth: 2))
                  }
             ).padding(40)
         }
@@ -137,7 +135,7 @@ struct BookView: View {
         }
         .alert("Attenzione", isPresented: $showAlert) {
             Button(role: .destructive) {
-                viewModel.delete([book], viewContext: viewContext)
+                viewModel.delete(book, from: books, viewContext: viewContext)
                 presentationMode.wrappedValue.dismiss()
             } label: {
                 Text("Conferma")

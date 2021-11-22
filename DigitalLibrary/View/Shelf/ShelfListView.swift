@@ -19,14 +19,15 @@ struct ShelfListView: View {
     @State var showAlert = false;
     @State var itemToRemove: Shelf? = nil
     
+    @FetchRequest(
+        entity: Shelf.entity(),
+        sortDescriptors: [NSSortDescriptor(keyPath: \Shelf.index, ascending: true)],
+        animation: .default)
+    private var fetchedShelfs: FetchedResults<Shelf>
     
-    var shelfs: [Shelf] {
+    var shelfs: Array<Shelf> {
         get {
-            var shelfs:[Shelf] = []
-            if let NSOrderedShelfs = bookshelf.shelfs {
-                NSOrderedShelfs.forEach({ s in shelfs.append(s as! Shelf)})
-            }
-            return shelfs.sorted(by: {s1, s2 in s1.index < s2.index})
+            return Array(fetchedShelfs).filter { $0.bookshelf! == bookshelf }
         }
     }
     
@@ -43,7 +44,7 @@ struct ShelfListView: View {
         List {
             ForEach(shelfs) { shelf in
                 if isEditable {
-                    Text(shelf.name ?? "").font(.title2)
+                    Text((shelf.name ?? "") /*debug*/ + " - " + String(shelf.index)/*debug*/).font(.title2)
                 } else {
                     SmallShelfView(viewModel: viewModel, shelf: shelf)
                 }
@@ -52,7 +53,7 @@ struct ShelfListView: View {
                 itemToRemove = shelfs[indexSet.first!]
                 if let itemToRemove = itemToRemove {
                     if (itemToRemove.books == nil || itemToRemove.books == []) {
-                        viewModel.delete(itemToRemove, viewContext: viewContext)
+                        viewModel.delete(itemToRemove, from: shelfs, viewContext: viewContext)
                         self.itemToRemove = nil
                     } else {
                         showAlert = true
@@ -64,7 +65,7 @@ struct ShelfListView: View {
         .alert("Attenzione", isPresented: $showAlert) {
             Button(role: .destructive) {
                 if let itemToRemove = itemToRemove {
-                    viewModel.delete(itemToRemove, viewContext: viewContext)
+                    viewModel.delete(itemToRemove, from: shelfs, viewContext: viewContext)
                     self.itemToRemove = nil
                 }
             } label: {

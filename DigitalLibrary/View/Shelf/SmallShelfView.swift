@@ -14,13 +14,15 @@ struct SmallShelfView: View {
     
     @Environment(\.managedObjectContext) private var viewContext    
     
-    var books: [Book] {
+    @FetchRequest(
+        entity: Book.entity(),
+        sortDescriptors: [NSSortDescriptor(keyPath: \Book.index, ascending: true)],
+        animation: .default)
+    private var fetchedBooks: FetchedResults<Book>
+    
+    var books: Array<Book> {
         get {
-            var books:[Book] = []
-            if let NSOrderedBooks = shelf.books {
-                NSOrderedBooks.forEach({ s in books.append(s as! Book) })                
-            }
-            return books.sorted(by: {s1, s2 in s1.index < s2.index})
+            return Array(fetchedBooks).filter { $0.shelf! == shelf }
         }
     }
     
@@ -29,7 +31,7 @@ struct SmallShelfView: View {
             NavigationLink(destination: ShelfView(viewModel: viewModel, shelf: shelf).environment(\.managedObjectContext, viewContext)) {
                 HStack {
                     Image(systemName: "square.split.2x2").foregroundColor(Color(UIColor.systemBlue)).imageScale(.medium)
-                    Text(shelf.name ?? "Nome Scaffale").font(.title2)
+                    Text((shelf.name ?? "") /*debug*/ + " - " + String(shelf.index)/*debug*/).font(.title2)
                     Spacer()
                     Image(systemName: "book")
                     Text(String(shelf.books?.count ?? 0))

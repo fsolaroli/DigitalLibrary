@@ -134,7 +134,8 @@ struct AddBook: View {
                     },
                     label: { Text("Aggiungi") }
                 )
-                .disabled(viewModel.inputBook.title == "" || self.shelf == nil))
+                .disabled(viewModel.inputBook.title == "" || self.shelf == nil)
+            )
         }
         .sheet(isPresented: $showBarcodeScanner, content: { BarcodeScannerView(viewModel: viewModel) })
         .sheet(isPresented: $showCoverScanner, content: {

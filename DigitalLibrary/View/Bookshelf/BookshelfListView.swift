@@ -30,7 +30,7 @@ struct BookshelfListView: View {
                 ForEach(bookshelfs) { bookshelf in
                     NavigationLink(destination: ShelfListView(viewModel: viewModel, bookshelf: bookshelf).environment(\.managedObjectContext, viewContext)) {
                         HStack {
-                            Text(bookshelf.name!).font(.title2)
+                            Text(bookshelf.name! /*debug*/ + " - " + String(bookshelf.index)/*debug*/).font(.title2)
                             Spacer()
                             HStack {
                                 Image(systemName: "book")
@@ -44,7 +44,7 @@ struct BookshelfListView: View {
                     itemToRemove = bookshelfs[indexSet.first!]
                     if let itemToRemove = itemToRemove {
                         if (itemToRemove.shelfs == nil || itemToRemove.shelfs == []) {
-                            viewModel.delete(itemToRemove, viewContext: viewContext)
+                            viewModel.delete(itemToRemove, from: Array(bookshelfs), viewContext: viewContext)
                             self.itemToRemove = nil
                         } else {
                             showAlert = true
@@ -79,7 +79,7 @@ struct BookshelfListView: View {
             .alert("Attenzione", isPresented: $showAlert) {
                 Button(role: .destructive) {
                     if let itemToRemove = itemToRemove {
-                        viewModel.delete(itemToRemove, viewContext: viewContext)
+                        viewModel.delete(itemToRemove, from: Array(bookshelfs), viewContext: viewContext)
                         self.itemToRemove = nil
                     }
                 } label: {

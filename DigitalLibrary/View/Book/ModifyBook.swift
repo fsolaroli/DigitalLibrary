@@ -32,6 +32,16 @@ struct ModifyBook: View {
         }
     }
     
+    var books: [Book] {
+        get {
+            var books:[Book] = []
+            if let NSOrderedBooks = book.shelf!.books {
+                NSOrderedBooks.forEach({ s in books.append(s as! Book) })
+            }
+            return books.sorted(by: {s1, s2 in s1.index < s2.index})
+        }
+    }
+    
     var body: some View {
         NavigationView {
             Form {
@@ -44,6 +54,7 @@ struct ModifyBook: View {
                     Picker(selection: Binding<Shelf>(
                         get: { book.shelf! },
                         set: {
+                            viewModel.move(book, from: books, to: $0)
                             if ($0 != book.shelf) {
                                 book.index = Int64($0.books?.count ?? 0)
                             }
@@ -111,7 +122,7 @@ struct ModifyBook: View {
             .navigationBarItems(
                 leading: Button(action: { viewContext.rollback(); presentationMode.wrappedValue.dismiss() }, label: { Text("Annulla") }),
                 trailing: Button(
-                    action: { try? viewContext.save(); presentationMode.wrappedValue.dismiss() },
+                    action: { presentationMode.wrappedValue.dismiss(); try? viewContext.save() },
                     label: { Text("Salva") }
                 )
                 .disabled(book.title == ""))
