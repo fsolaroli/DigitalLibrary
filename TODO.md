@@ -14,7 +14,7 @@
 
 - Add reading flag, with page progress ???
 
-- Add iCloud backup
+- Add iCloud backup (need apple developer account (paid)) - https://developer.apple.com/documentation/coredata/mirroring_a_core_data_store_with_cloudkit/setting_up_core_data_with_cloudkit
 
 
 # DONE

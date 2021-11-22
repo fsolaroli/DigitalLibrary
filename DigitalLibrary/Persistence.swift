@@ -11,9 +11,11 @@ struct PersistenceController {
     static let shared = PersistenceController()
 
     let container: NSPersistentContainer
+//    let container: NSPersistentCloudKitContainer //iCloud
 
     init(inMemory: Bool = false) {
         container = NSPersistentContainer(name: "DigitalLibrary")
+//        container = NSPersistentCloudKitContainer(name: "DigitalLibrary") //iCloud
         if inMemory {
             container.persistentStoreDescriptions.first!.url = URL(fileURLWithPath: "/dev/null")
         }
