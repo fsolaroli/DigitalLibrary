@@ -87,14 +87,14 @@ struct ShelfView: View {
                                 Image(systemName: "book.closed").resizable().font(Font.title.weight(.ultraLight)).scaledToFit()
                             }
                         }.frame(width: 50, height: 50)
-                        Text((book.title ?? "") /*debug*/ + " - " + String(book.index)/*debug*/).lineLimit(2)
+                        Text((book.title ?? "") /*debug + " - " + String(book.index) debug*/).lineLimit(2)
                     }
                 } else {
                     NavigationLink(destination: BookView(viewModel: viewModel, book: book).environment(\.managedObjectContext, viewContext)) {
                         HStack {
                             SmallBookView(book: book).frame(width: 100, height: 150)
                             VStack(alignment: .leading) {
-                                Text((book.title ?? "") /*debug*/ + " - " + String(book.index) /*debug*/).font(.title3).padding()
+                                Text((book.title ?? "") /*debug + " - " + String(book.index) debug*/).font(.title3).padding()
                                 Spacer()
                                 HStack {
                                     Text("Autore: ").fontWeight(.bold)
@@ -133,7 +133,7 @@ struct ShelfView: View {
             ToolbarItem(placement: .primaryAction) {
                 if (!isEditable) {
                     Menu {
-                        /*debug*/Button(action: { viewModel.fix(books, viewContext: viewContext) }, label: { Text("FIX") })/*debug*/
+                        /*debug Button(action: { viewModel.fix(books, viewContext: viewContext) }, label: { Text("FIX") }) debug*/
                         Button(
                             action: { isEditable.toggle() },
                             label:  { Image(systemName: "list.bullet"); Text("Modifica Scaffale") }
@@ -160,13 +160,13 @@ struct ShelfView: View {
                     .environment(\.managedObjectContext, viewContext)
             }
         )
-        .sheet(
-            isPresented: $showMoveBooks, onDismiss: { },
-            content: {
-                MoveBooks(viewModel: viewModel, bookshelf: shelf.bookshelf!, shelf: shelf, books: books)
-                    .environment(\.managedObjectContext, viewContext)
-            }
-        )
+//        .sheet(
+//            isPresented: $showMoveBooks, onDismiss: { },
+//            content: {
+//                MoveBooks(viewModel: viewModel, bookshelf: shelf.bookshelf!, shelf: shelf, books: books)
+//                    .environment(\.managedObjectContext, viewContext)
+//            }
+//        )
     }
     
     func move(from source: IndexSet, to destination: Int) {

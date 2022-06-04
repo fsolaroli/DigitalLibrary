@@ -31,7 +31,7 @@ struct SmallShelfView: View {
             NavigationLink(destination: ShelfView(viewModel: viewModel, shelf: shelf).environment(\.managedObjectContext, viewContext)) {
                 HStack {
                     Image(systemName: "square.split.2x2").foregroundColor(Color(UIColor.systemBlue)).imageScale(.medium)
-                    Text((shelf.name ?? "") /*debug*/ + " - " + String(shelf.index)/*debug*/).font(.title2)
+                    Text((shelf.name ?? "") /*debug* + " - " + String(shelf.index) debug*/).font(.title2)
                     Spacer()
                     Image(systemName: "book")
                     Text(String(shelf.books?.count ?? 0))

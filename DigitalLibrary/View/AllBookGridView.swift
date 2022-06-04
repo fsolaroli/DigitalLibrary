@@ -28,7 +28,7 @@ enum Orders {
             case .ALPHABETIC:
                 return Label("Alfabetico", systemImage: "abc")
             case .AUTHOR:
-                return Label("Autore", systemImage: "person.fill")
+                return Label("Autore", systemImage: "person")
             case .DATE:
                 return Label("Pubblicazione", systemImage: "calendar")
 
@@ -74,31 +74,31 @@ struct AllBookGridView: View {
     var body: some View {
         NavigationView {
             VStack {
-                HStack {
-                    ZStack {
-                        TextField("Filtra libri", text: Binding(get: { filter }, set: { newValue in withAnimation { filter = newValue } }))
-                            .textFieldStyle(RoundedBorderTextFieldStyle()).padding(.horizontal, 3)
-                        HStack {
-                            Spacer()
-                            Button(
-                                action: { withAnimation { filter = "" }},
-                                label: { Image(systemName: "xmark").frame(width: 50, height: 50, alignment: .center) }
-                            ).foregroundColor(Color(UIColor.label))
-                        }
-                    }
-                    Spacer()
-                    Button(
-                        action: { withAnimation { showFavourites.toggle() }},
-                        label: {
-                            if (showFavourites) {
-                                Image(systemName: "heart.fill").foregroundColor(.red)
-                            } else {
-                                Image(systemName: "heart")
-                            }
-                        }
-                    ).font(.title2)
-                }.padding(.bottom, 1).padding(.horizontal, 5).padding(.top, 10)
-                Divider()
+//                HStack {
+//                    ZStack {
+//                        TextField("Filtra libri", text: Binding(get: { filter }, set: { newValue in withAnimation { filter = newValue } }))
+//                            .textFieldStyle(RoundedBorderTextFieldStyle()).padding(.horizontal, 3)
+//                        HStack {
+//                            Spacer()
+//                            Button(
+//                                action: { withAnimation { filter = "" }},
+//                                label: { Image(systemName: "xmark").frame(width: 50, height: 50, alignment: .center) }
+//                            ).foregroundColor(Color(UIColor.label))
+//                        }
+//                    }
+//                    Spacer()
+//                    Button(
+//                        action: { withAnimation { showFavourites.toggle() }},
+//                        label: {
+//                            if (showFavourites) {
+//                                Image(systemName: "heart.fill").foregroundColor(.red)
+//                            } else {
+//                                Image(systemName: "heart")
+//                            }
+//                        }
+//                    ).font(.title2)
+//                }.padding(.bottom, 1).padding(.horizontal, 5).padding(.top, 10)
+//                Divider()
                 ScrollView(.vertical) {
                     if (groupedBooks.isEmpty && !books.isEmpty) {
                         Text("Nessun libro corrisponde ai criteri della ricerca")
@@ -124,29 +124,47 @@ struct AllBookGridView: View {
                         }
                     }
                 }
+            
             }
+            
             .navigationTitle("Libri")
             .navigationBarTitleDisplayMode(.inline)
-            .navigationBarItems(
-                leading: Menu(
-                    content: {
-                        Button(
-                            action: { order = Orders.ALPHABETIC },
-                            label: { Orders.ALPHABETIC.label() }
-                        )
-                        Button(
-                            action: { order = Orders.AUTHOR },
-                            label: { Orders.AUTHOR.label() }
-                        )
-                        Button(
-                            action: { order = Orders.DATE },
-                            label: { Orders.DATE.label() }
-                        )
-                    },
-                    label: { order.label().imageScale(.large) }
-                ),
-                trailing: Button(action: { showAddBook = true }, label: { Image(systemName: "plus").imageScale(.large) })
-            )
+            .toolbar {
+                ToolbarItemGroup(placement: .navigationBarLeading) {
+                    Menu(
+                        content: {
+                            Button(
+                                action: { order = Orders.ALPHABETIC },
+                                label: { Orders.ALPHABETIC.label() }
+                            )
+                            Button(
+                                action: { order = Orders.AUTHOR },
+                                label: { Orders.AUTHOR.label() }
+                            )
+                            Button(
+                                action: { order = Orders.DATE },
+                                label: { Orders.DATE.label() }
+                            )
+                        },
+                        label: { order.label().imageScale(.large) }
+                    )
+                    Button(
+                        action: { withAnimation { showFavourites.toggle() }},
+                        label: {
+                            if (showFavourites) {
+                                Image(systemName: "heart.fill").foregroundColor(.red).imageScale(.large)
+                            } else {
+                                Image(systemName: "heart").imageScale(.large)
+                            }
+                        }
+                    )
+                }
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button(action: { showAddBook = true }, label: { Image(systemName: "plus").imageScale(.large) })
+                }
+                
+            }
+            .searchable(text: $filter, placement: .navigationBarDrawer(displayMode: .always), prompt: "Filtra libri")
         }
         .navigationViewStyle(StackNavigationViewStyle())
         .sheet(

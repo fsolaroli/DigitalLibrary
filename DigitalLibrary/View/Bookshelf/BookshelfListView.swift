@@ -30,7 +30,7 @@ struct BookshelfListView: View {
                 ForEach(bookshelfs) { bookshelf in
                     NavigationLink(destination: ShelfListView(viewModel: viewModel, bookshelf: bookshelf).environment(\.managedObjectContext, viewContext)) {
                         HStack {
-                            Text(bookshelf.name! /*debug*/ + " - " + String(bookshelf.index)/*debug*/).font(.title2)
+                            Text(bookshelf.name! /*debug + " - " + String(bookshelf.index) debug*/).font(.title2)
                             Spacer()
                             HStack {
                                 Image(systemName: "book")

@@ -44,7 +44,7 @@ struct ShelfListView: View {
         List {
             ForEach(shelfs) { shelf in
                 if isEditable {
-                    Text((shelf.name ?? "") /*debug*/ + " - " + String(shelf.index)/*debug*/).font(.title2)
+                    Text((shelf.name ?? "") /*debug + " - " + String(shelf.index) debug*/).font(.title2)
                 } else {
                     SmallShelfView(viewModel: viewModel, shelf: shelf)
                 }
