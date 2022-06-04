@@ -6,18 +6,20 @@
 //
 
 import SwiftUI
+import UniformTypeIdentifiers
 
 struct BookshelfListView: View {    
     
     @ObservedObject var viewModel: ManageData
     
     @Environment(\.managedObjectContext) private var viewContext
-    
-    @State private var isEditable = false
+     
     @State var showAddBookshelf = false
     @State var showAlert = false;
     @State var itemToRemove: Bookshelf? = nil
       
+    @State var draggedItem : Bookshelf?
+    
     @FetchRequest(
         entity: Bookshelf.entity(),
         sortDescriptors: [NSSortDescriptor(keyPath: \Bookshelf.index, ascending: true)],
@@ -38,39 +40,42 @@ struct BookshelfListView: View {
                             }
                         }
                     }
-                }
-                .onMove(perform: move)
-                .onDelete(perform: { indexSet in
-                    itemToRemove = bookshelfs[indexSet.first!]
-                    if let itemToRemove = itemToRemove {
-                        if (itemToRemove.shelfs == nil || itemToRemove.shelfs == []) {
-                            viewModel.delete(itemToRemove, from: Array(bookshelfs), viewContext: viewContext)
-                            self.itemToRemove = nil
-                        } else {
-                            showAlert = true
+                    .onDrag({
+                        self.draggedItem = bookshelf
+                        return NSItemProvider(item: nil, typeIdentifier: bookshelf.name ?? "")
+                    })
+                    .onDrop(of: [UTType.text], delegate:
+                        MyDropDelegate<Bookshelf>(item: bookshelf, items:
+                            Binding<[Bookshelf]> (
+                                get: { return Array(bookshelfs) },
+                                set: { _ in }
+                            )
+                            , draggedItem: $draggedItem
+                        )
+                    )
+                    .swipeActions(allowsFullSwipe: false) {
+                        Button(role: .destructive) {
+                            if (bookshelf.shelfs == nil || bookshelf.shelfs == []) {
+                                    viewModel.delete(bookshelf, from: Array(bookshelfs), viewContext: viewContext)
+                                } else {
+                                    self.itemToRemove = bookshelf
+                                    showAlert = true
+                                }
+                    } label: {
+                            Label("Delete", systemImage: "trash.fill")
                         }
                     }
-                })
+                }
+                .onMove(perform: move)
             }
-            .environment(\.editMode, .constant(isEditable ? .active : .inactive))
             .navigationTitle("Librerie")
             .listStyle(PlainListStyle())
             .toolbar {
                 ToolbarItem(placement: .primaryAction) {
-                    if !isEditable {
-                        Menu {
-                            Button(
-                                action: { isEditable.toggle() },
-                                label: { Image(systemName: "list.bullet"); Text("Modifica Librerie") }
-                            ).disabled(bookshelfs.isEmpty)
-                            Button(
-                                action: { showAddBookshelf = true },
-                                label: { Image(systemName: "plus"); Text("Aggiungi Libreria") }
-                            )
-                        } label: { Image(systemName: "ellipsis").imageScale(.large).frame(width: 40, height: 60) }
-                    } else {
-                        Button(action: { isEditable.toggle() }, label: { Text("Fatto") }).disabled(bookshelfs.isEmpty)
-                    }
+                    Button(
+                        action: { showAddBookshelf = true },
+                        label: { Image(systemName: "plus") }
+                    )
                 }
             }
             .sheet(isPresented: $showAddBookshelf, content: {
