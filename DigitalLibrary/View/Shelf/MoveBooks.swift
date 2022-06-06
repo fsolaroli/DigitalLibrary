@@ -60,6 +60,16 @@ struct MoveBooks: View {
                 }
                 .padding(.top, -24.0)
                 .frame(height: 120.0)
+
+                HStack {
+                    Button("Rimuovi tutti") {
+                        selectedBooks = Set<Book>()
+                    }.disabled(selectedBooks.count == 0).padding(.horizontal, 30.0)
+                    Spacer()
+                    Button("Seleziona tutti") {
+                        selectedBooks = Set(books)
+                    }.disabled(selectedBooks.count == books.count).padding(.horizontal, 30.0)
+                }.padding(.top, 10)
                 
                 List(selection: $selectedBooks) {
                     ForEach(books, id: \.self) { book in
