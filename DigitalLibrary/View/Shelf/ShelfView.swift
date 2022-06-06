@@ -79,16 +79,7 @@ struct ShelfView: View {
         List {
             ForEach(books) { book in
                 if (isEditable) {
-                    HStack {
-                        HStack {
-                            if let coverData = book.cover, let coverImage = UIImage(data: coverData){
-                                Image(uiImage: coverImage).resizable().scaledToFit()
-                            } else {
-                                Image(systemName: "book.closed").resizable().font(Font.title.weight(.ultraLight)).scaledToFit()
-                            }
-                        }.frame(width: 50, height: 50)
-                        Text((book.title ?? "") /*debug + " - " + String(book.index) debug*/).lineLimit(2)
-                    }
+                    SmallerBookView(book: book)
                 } else {
                     NavigationLink(destination: BookView(viewModel: viewModel, book: book).environment(\.managedObjectContext, viewContext)) {
                         HStack {
@@ -141,7 +132,7 @@ struct ShelfView: View {
                         Button(
                             action: { showMoveBooks.toggle() },
                             label:  { Image(systemName: "checkmark.circle"); Text("Muovi libri") }
-                        )
+                        ).disabled(books.isEmpty)
                         Button(
                             action: { showAddBook = true },
                             label:  { Image(systemName: "plus"); Text("Aggiungi Libro") }
@@ -160,13 +151,13 @@ struct ShelfView: View {
                     .environment(\.managedObjectContext, viewContext)
             }
         )
-//        .sheet(
-//            isPresented: $showMoveBooks, onDismiss: { },
-//            content: {
-//                MoveBooks(viewModel: viewModel, bookshelf: shelf.bookshelf!, shelf: shelf, books: books)
-//                    .environment(\.managedObjectContext, viewContext)
-//            }
-//        )
+        .sheet(
+            isPresented: $showMoveBooks, onDismiss: { },
+            content: {
+                MoveBooks(viewModel: viewModel, bookshelf: shelf.bookshelf!, shelf: shelf, books: books)
+                    .environment(\.managedObjectContext, viewContext)
+            }
+        )
     }
     
     func move(from source: IndexSet, to destination: Int) {

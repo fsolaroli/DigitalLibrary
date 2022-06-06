@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="18154" systemVersion="20F71" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="20086" systemVersion="21F79" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="Book" representedClassName="Book" syncable="YES" codeGenerationType="class">
         <attribute name="authors" optional="YES" attributeType="String"/>
         <attribute name="cover" optional="YES" attributeType="Binary" allowsExternalBinaryDataStorage="YES"/>
@@ -33,8 +33,8 @@
     </entity>
     <elements>
         <element name="Book" positionX="-37.0458984375" positionY="-102.78857421875" width="128" height="224"/>
-        <element name="Bookshelf" positionX="-330.301025390625" positionY="-4.58349609375" width="128" height="74"/>
-        <element name="Shelf" positionX="-183.695068359375" positionY="202.1500854492188" width="205.65087890625" height="89"/>
-        <element name="Borrowed" positionX="-180" positionY="54" width="128" height="74"/>
+        <element name="Bookshelf" positionX="-330.301025390625" positionY="-4.58349609375" width="128" height="88"/>
+        <element name="Borrowed" positionX="-220.873046875" positionY="-187.4370727539062" width="128" height="88"/>
+        <element name="Shelf" positionX="-130.808349609375" positionY="239.0359497070313" width="205.65087890625" height="103"/>
     </elements>
 </model>
