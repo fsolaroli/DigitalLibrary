@@ -21,7 +21,7 @@ class ManageData: ObservableObject {
     init(viewContext: NSManagedObjectContext) {
         if (UserDefaults.standard.object(forKey: "newUser") as? Bool ?? true) {
             let newBookshelf = addBookshelf(name: "La mia prima libreria", index: 0, viewContext: viewContext)
-            inputBook.title = "Primo LIbro"
+            inputBook.title = "Primo Libro"
             addBook(shelf: newBookshelf.shelfs![0] as! Shelf, index: 0, viewContext: viewContext)
             UserDefaults.standard.set(false, forKey: "newUser")
         }

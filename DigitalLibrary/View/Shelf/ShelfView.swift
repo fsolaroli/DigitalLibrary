@@ -136,7 +136,7 @@ struct ShelfView: View {
                         /*debug Button(action: { viewModel.fix(books, viewContext: viewContext) }, label: { Text("FIX") }) debug*/
                         Button(
                             action: { isEditable.toggle() },
-                            label:  { Image(systemName: "list.bullet"); Text("Modifica Scaffale") }
+                            label:  { Image(systemName: "square.and.pencil"); Text("Modifica Scaffale") }
                         )
                         Button(
                             action: { showMoveBooks.toggle() },

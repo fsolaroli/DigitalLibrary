@@ -85,7 +85,7 @@ struct ShelfListView: View {
                     Menu {
                         Button(
                             action: { if(isEditable) { try? viewContext.save() }; isEditable.toggle() },
-                            label: { Image(systemName: "list.bullet"); Text("Modifica Libreria") }
+                            label: { Image(systemName: "square.and.pencil"); Text("Modifica Libreria") }
                         )
                         Button(
                             action: { showAddShelfView = true },
