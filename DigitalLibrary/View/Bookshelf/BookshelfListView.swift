@@ -78,8 +78,10 @@ struct BookshelfListView: View {
                     )
                 }
             }
-            .sheet(isPresented: $showAddBookshelf, content: {
-                AddBookshelf(viewModel: viewModel, nextIndex: bookshelfs.count).environment(\.managedObjectContext, viewContext)
+            .textFieldAlert(isPresented: $showAddBookshelf, title: "Nuova Libreria", accept: "Aggiungi", action: { name in
+                if name != nil && name != "" {
+                    _ = viewModel.addBookshelf(name: name!, index: bookshelfs.count, viewContext: viewContext)                    
+                }
             })
             .alert("Attenzione", isPresented: $showAlert) {
                 Button(role: .destructive) {

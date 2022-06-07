@@ -15,6 +15,8 @@
 		E5301CAA268717F00081F5EF /* SmallBookView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5301CA9268717F00081F5EF /* SmallBookView.swift */; };
 		E53CE61E274BF458000F5B82 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E53CE61D274BF458000F5B82 /* CloudKit.framework */; };
 		E5415250284E52C300601CAD /* SmallerBookView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E541524F284E52C300601CAD /* SmallerBookView.swift */; };
+		E541525A284ED61500601CAD /* View+textFieldAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5415259284ED61500601CAD /* View+textFieldAlert.swift */; };
+		E541525C284ED71B00601CAD /* TextFieldAlertModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = E541525B284ED71B00601CAD /* TextFieldAlertModifier.swift */; };
 		E5467D8A267E15C600EA89BD /* DigitalLibraryApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5467D89267E15C600EA89BD /* DigitalLibraryApp.swift */; };
 		E5467D91267E15C600EA89BD /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E5467D90267E15C600EA89BD /* Preview Assets.xcassets */; };
 		E5467D93267E15C600EA89BD /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5467D92267E15C600EA89BD /* Persistence.swift */; };
@@ -22,7 +24,6 @@
 		E5467DB0267E1B7800EA89BD /* BookshelfListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5467DAF267E1B7800EA89BD /* BookshelfListView.swift */; };
 		E5467DB2267E1CCB00EA89BD /* ManageData.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5467DB1267E1CCB00EA89BD /* ManageData.swift */; };
 		E5467DB4267E22F500EA89BD /* ShelfListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5467DB3267E22F500EA89BD /* ShelfListView.swift */; };
-		E5467DC2267E28EB00EA89BD /* AddBookshelf.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5467DC1267E28EB00EA89BD /* AddBookshelf.swift */; };
 		E554F426284B847A003DDFFA /* MoveBooks.swift in Sources */ = {isa = PBXBuildFile; fileRef = E554F425284B847A003DDFFA /* MoveBooks.swift */; };
 		E5B48CC92688CD39006870EE /* String+searchFormat.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B48CC82688CD39006870EE /* String+searchFormat.swift */; };
 		E5D73993284BCA5900B44F05 /* DragAndDrop.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D73992284BCA5900B44F05 /* DragAndDrop.swift */; };
@@ -47,6 +48,8 @@
 		E53CE61B274BF1E8000F5B82 /* DigitalLibrary.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = DigitalLibrary.entitlements; sourceTree = "<group>"; };
 		E53CE61D274BF458000F5B82 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 		E541524F284E52C300601CAD /* SmallerBookView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SmallerBookView.swift; sourceTree = "<group>"; };
+		E5415259284ED61500601CAD /* View+textFieldAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+textFieldAlert.swift"; sourceTree = "<group>"; };
+		E541525B284ED71B00601CAD /* TextFieldAlertModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldAlertModifier.swift; sourceTree = "<group>"; };
 		E5467D86267E15C600EA89BD /* DigitalLibrary.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DigitalLibrary.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E5467D89267E15C600EA89BD /* DigitalLibraryApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DigitalLibraryApp.swift; sourceTree = "<group>"; };
 		E5467D90267E15C600EA89BD /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
@@ -56,7 +59,6 @@
 		E5467DAF267E1B7800EA89BD /* BookshelfListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookshelfListView.swift; sourceTree = "<group>"; };
 		E5467DB1267E1CCB00EA89BD /* ManageData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageData.swift; sourceTree = "<group>"; };
 		E5467DB3267E22F500EA89BD /* ShelfListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShelfListView.swift; sourceTree = "<group>"; };
-		E5467DC1267E28EB00EA89BD /* AddBookshelf.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddBookshelf.swift; sourceTree = "<group>"; };
 		E554F425284B847A003DDFFA /* MoveBooks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoveBooks.swift; sourceTree = "<group>"; };
 		E5B48CC82688CD39006870EE /* String+searchFormat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+searchFormat.swift"; sourceTree = "<group>"; };
 		E5C39E1927486C4100D4EE11 /* TODO.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = TODO.md; sourceTree = "<group>"; };
@@ -88,7 +90,6 @@
 			isa = PBXGroup;
 			children = (
 				E5467DAF267E1B7800EA89BD /* BookshelfListView.swift */,
-				E5467DC1267E28EB00EA89BD /* AddBookshelf.swift */,
 			);
 			path = Bookshelf;
 			sourceTree = "<group>";
@@ -188,6 +189,7 @@
 			isa = PBXGroup;
 			children = (
 				E5D73992284BCA5900B44F05 /* DragAndDrop.swift */,
+				E541525B284ED71B00601CAD /* TextFieldAlertModifier.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -197,6 +199,7 @@
 			children = (
 				E5FD361C267FB9F800693351 /* UIApplication+dismissKeyboard.swift */,
 				E5B48CC82688CD39006870EE /* String+searchFormat.swift */,
+				E5415259284ED61500601CAD /* View+textFieldAlert.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -282,9 +285,9 @@
 				E5D73993284BCA5900B44F05 /* DragAndDrop.swift in Sources */,
 				E5FD361D267FB9F800693351 /* UIApplication+dismissKeyboard.swift in Sources */,
 				E5FD3617267F7E2500693351 /* AddBook.swift in Sources */,
-				E5467DC2267E28EB00EA89BD /* AddBookshelf.swift in Sources */,
 				E52EF8AF269E2BE500ACEEB0 /* ShelfView.swift in Sources */,
 				E5301CA32685E04B0081F5EF /* HomeView.swift in Sources */,
+				E541525C284ED71B00601CAD /* TextFieldAlertModifier.swift in Sources */,
 				E5FD3608267E593500693351 /* SmallShelfView.swift in Sources */,
 				E5467DB2267E1CCB00EA89BD /* ManageData.swift in Sources */,
 				E5FD3612267F791C00693351 /* ScannerCoverView.swift in Sources */,
@@ -293,6 +296,7 @@
 				E5415250284E52C300601CAD /* SmallerBookView.swift in Sources */,
 				E5467DAD267E167200EA89BD /* DigitalLibrary.xcdatamodeld in Sources */,
 				E5467D8A267E15C600EA89BD /* DigitalLibraryApp.swift in Sources */,
+				E541525A284ED61500601CAD /* View+textFieldAlert.swift in Sources */,
 				E5467DB4267E22F500EA89BD /* ShelfListView.swift in Sources */,
 				E5FD360A267E5DE700693351 /* AddShelf.swift in Sources */,
 				E5301CAA268717F00081F5EF /* SmallBookView.swift in Sources */,
