@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import UniformTypeIdentifiers
 
 struct BookshelfListView: View {    
     
@@ -16,9 +15,6 @@ struct BookshelfListView: View {
      
     @State var showAddBookshelf = false
     @State var showAlert = false;
-    @State var itemToRemove: Bookshelf? = nil
-      
-    @State var draggedItem : Bookshelf?
     
     @FetchRequest(
         entity: Bookshelf.entity(),
@@ -30,39 +26,26 @@ struct BookshelfListView: View {
         NavigationView {
             List {
                 ForEach(bookshelfs) { bookshelf in
-                    NavigationLink(destination: ShelfListView(viewModel: viewModel, bookshelf: bookshelf).environment(\.managedObjectContext, viewContext)) {
+                    NavigationLink(destination: BookshelfView(viewModel: viewModel, bookshelf: bookshelf).environment(\.managedObjectContext, viewContext)) {
                         HStack {
-                            Text(bookshelf.name! /*debug + " - " + String(bookshelf.index) debug*/).font(.title2)
+                            Text(bookshelf.name! /*debug* + " - " + String(bookshelf.index) *debug*/).font(.title2)
                             Spacer()
                             HStack {
-                                Image(systemName: "book")
                                 Text(viewModel.numberOfBooks(in: bookshelf))
+                                Image(systemName: "book")
                             }
                         }
                     }
-                    .onDrag({
-                        self.draggedItem = bookshelf
-                        return NSItemProvider(item: nil, typeIdentifier: bookshelf.name ?? "")
-                    })
-                    .onDrop(of: [UTType.text], delegate:
-                        MyDropDelegate<Bookshelf>(item: bookshelf, items:
-                            Binding<[Bookshelf]> (
-                                get: { return Array(bookshelfs) },
-                                set: { _ in }
-                            )
-                            , draggedItem: $draggedItem
-                        )
-                    )
                     .swipeActions(allowsFullSwipe: false) {
                         Button(role: .destructive) {
+                            viewModel.delete(bookshelf, from: Array(bookshelfs), viewContext: viewContext)
                             if (bookshelf.shelfs == nil || bookshelf.shelfs == []) {
-                                    viewModel.delete(bookshelf, from: Array(bookshelfs), viewContext: viewContext)
-                                } else {
-                                    self.itemToRemove = bookshelf
-                                    showAlert = true
-                                }
+                                try? viewContext.save()
+                            } else {
+                                showAlert = true
+                            }
                     } label: {
-                            Label("Delete", systemImage: "trash.fill")
+                            Label("Elimina", systemImage: "trash.fill")
                         }
                     }
                 }
@@ -85,14 +68,11 @@ struct BookshelfListView: View {
             })
             .alert("Attenzione", isPresented: $showAlert) {
                 Button(role: .destructive) {
-                    if let itemToRemove = itemToRemove {
-                        viewModel.delete(itemToRemove, from: Array(bookshelfs), viewContext: viewContext)
-                        self.itemToRemove = nil
-                    }
+                    try? viewContext.save()
                 } label: {
                     Text("Conferma")
                 }
-                Button("Annulla", role: .cancel) { self.itemToRemove = nil }
+                Button("Annulla", role: .cancel) { viewContext.rollback() }
             } message: {
                 Text("Cancellando la libreria si cancelleranno anche gli scaffali e i libri al suo interno")
             }

@@ -176,19 +176,11 @@ class ManageData: ObservableObject {
         
         viewContext.delete(bookshelf)
         
-        try? viewContext.save()
-    }
-    
-    func deleteAll(_ bookshelfs: Array<Bookshelf>, from array: Array<Bookshelf>, viewContext: NSManagedObjectContext) {
-        for bookshelf in bookshelfs {
-            delete(bookshelf, from: array, viewContext: viewContext)
-        }
+//        try? viewContext.save()
     }
     
     func move(_ array: Array<Shelf>, from source: Int, to destination: Int, viewContext: NSManagedObjectContext) {
         if (source != destination) {
-            
-            
             if(source < destination) {
                 array[source].index = Int64(destination - 1)
                 for element in array[(source + 1) ..< destination] {
@@ -196,11 +188,11 @@ class ManageData: ObservableObject {
                 }
             } else {
                 array[source].index = Int64(destination)
-                for element in array[destination ..< source] {
+                for element in array[(destination) ..< source] {
                     element.index = element.index + 1
                 }
             }
-           
+
             try? viewContext.save()
         }
     }
@@ -214,19 +206,11 @@ class ManageData: ObservableObject {
         
         viewContext.delete(shelf)
         
-        try? viewContext.save()
-    }
-    
-    func deleteAll(_ shelfs: Array<Shelf>, from array: Array<Shelf>, viewContext: NSManagedObjectContext) {
-        for shelf in shelfs {
-            delete(shelf, from: array, viewContext: viewContext)
-        }
+//        try? viewContext.save()
     }
     
     func move(_ array: Array<Book>, from source: Int, to destination: Int, viewContext: NSManagedObjectContext) {
         if (source != destination) {
-            
-            
             if(source < destination) {
                 array[source].index = Int64(destination - 1)
                 for element in array[(source + 1) ..< destination] {
@@ -238,9 +222,19 @@ class ManageData: ObservableObject {
                     element.index = element.index + 1
                 }
             }
-           
+
             try? viewContext.save()
         }
+    }
+    
+    func move(_ books: Set<Book>, from array: Array<Book>, to destination: Shelf, viewContext: NSManagedObjectContext) {
+        var mutableArray = array
+        for book in books {
+            move(book, from: mutableArray, to: destination)
+            mutableArray.remove(at: mutableArray.firstIndex(of: book)!)
+        }
+        
+        try? viewContext.save()
     }
     
     func move(_ book: Book, from array: Array<Book>, to destination: Shelf) {
@@ -258,16 +252,6 @@ class ManageData: ObservableObject {
         
     }
     
-    func move(_ books: Set<Book>, from array: Array<Book>, to destination: Shelf, viewContext: NSManagedObjectContext) {
-        var mutableArray = array
-        for book in books {
-            move(book, from: mutableArray, to: destination)
-            mutableArray.remove(at: mutableArray.firstIndex(of: book)!)
-        }
-        
-        try? viewContext.save()
-    }
-    
     func delete(_ book: Book, from array: Array<Book>, viewContext: NSManagedObjectContext) {
         let index = array.firstIndex(of: book)!
         
@@ -277,14 +261,9 @@ class ManageData: ObservableObject {
         
         viewContext.delete(book)
         
-        try? viewContext.save()
+//        try? viewContext.save()
     }
-    
-    func deleteAll(_ books: Array<Book>, from array: Array<Book>, viewContext: NSManagedObjectContext) {
-        for book in books {
-            delete(book, from: array, viewContext: viewContext)
-        }
-    }
+
     
     func fix(_ tofix: Array<Book>, viewContext: NSManagedObjectContext) {
         var i: Int = 0;

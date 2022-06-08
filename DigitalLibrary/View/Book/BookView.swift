@@ -44,9 +44,9 @@ struct BookView: View {
                     },
                     label: {
                         if (book.favourite) {
-                            Image(systemName: "heart.fill").foregroundColor(.red)
+                            Image(systemName: "star.fill").foregroundColor(.yellow)
                         } else {
-                            Image(systemName: "heart")
+                            Image(systemName: "star")
                         }
                     }
                 ).font(.title)

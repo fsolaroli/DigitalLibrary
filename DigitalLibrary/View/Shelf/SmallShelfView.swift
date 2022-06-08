@@ -20,9 +20,13 @@ struct SmallShelfView: View {
         animation: .default)
     private var fetchedBooks: FetchedResults<Book>
     
-    var books: Array<Book> {
+    var books: [Book] {
         get {
-            return Array(fetchedBooks).filter { $0.shelf! == shelf }
+            var books:[Book] = []
+            if let NSOrderedBooks = shelf.books {
+                NSOrderedBooks.forEach({ b in books.append(b as! Book) })
+            }
+            return books.sorted(by: {b1, b2 in b1.index < b2.index})
         }
     }
     
@@ -31,10 +35,10 @@ struct SmallShelfView: View {
             NavigationLink(destination: ShelfView(viewModel: viewModel, shelf: shelf).environment(\.managedObjectContext, viewContext)) {
                 HStack {
                     Image(systemName: "square.split.2x2").foregroundColor(Color(UIColor.systemBlue)).imageScale(.medium)
-                    Text((shelf.name ?? "") /*debug* + " - " + String(shelf.index) debug*/).font(.title2)
+                    Text((shelf.name ?? "") /*debug* + " - " + String(shelf.index) *debug*/).font(.title2)
                     Spacer()
-                    Image(systemName: "book")
                     Text(String(shelf.books?.count ?? 0))
+                    Image(systemName: "book")
                 }
             }.padding(.top, 6)
             GeometryReader { fullView in

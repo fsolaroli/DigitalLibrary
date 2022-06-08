@@ -14,10 +14,11 @@ struct ShelfView: View {
     
     @Environment(\.managedObjectContext) private var viewContext
     
+    @State private var showAlert = false
     @State private var isEditable = false
     @State private var showAddBook = false
     @State private var showMoveBooks = false
-    @State private var itemToRemove: Book? = nil
+//    @State private var itemToRemove: Book? = nil
 
     @State private var bookshelfToMove: Bookshelf? = nil
     @State private var shelfToMove: Shelf? = nil
@@ -40,47 +41,47 @@ struct ShelfView: View {
         get {
             var books:[Book] = []
             if let NSOrderedBooks = shelf.books {
-                NSOrderedBooks.forEach({ s in books.append(s as! Book) })
+                NSOrderedBooks.forEach({ b in books.append(b as! Book) })
             }
-            return books.sorted(by: {s1, s2 in s1.index < s2.index})
+            return books.sorted(by: {b1, b2 in b1.index < b2.index})
         }
     }
     
     var body: some View {
-        if (isEditable) {
-            TextField("Nome scaffale", text: Binding<String>(
-                get: { shelf.name! },
-                set: {
-                    shelf.name = $0
-                    try? viewContext.save()
-                }
-            )).textFieldStyle(RoundedBorderTextFieldStyle()).font(.title).padding()
-            Form {
-                Picker(selection: Binding<Bookshelf>(
-                    get: { shelf.bookshelf! },
-                    set: {
-                        if ($0 != shelf.bookshelf) {
-                            shelf.index = Int64($0.shelfs?.count ?? 0)
-                        }
-                        shelf.bookshelf = $0
-                        try? viewContext.save()
-                    }
-                ), label: Text("Scaffale"), content: {
-                    ForEach(Array(bookshelfs)) { bookshelf in
-                        Text(bookshelf.name!).tag(bookshelf)
-                    }
-                })
-            }
-            .padding(.top, -24.0)
-            .frame(height: 55.0)
-            
-        }
+//        if (isEditable) {
+//            TextField("Nome scaffale", text: Binding<String>(
+//                get: { shelf.name! },
+//                set: {
+//                    shelf.name = $0
+//                    try? viewContext.save()
+//                }
+//            )).textFieldStyle(RoundedBorderTextFieldStyle()).font(.title).padding()
+//            Form {
+//                Picker(selection: Binding<Bookshelf>(
+//                    get: { shelf.bookshelf! },
+//                    set: {
+//                        if ($0 != shelf.bookshelf) {
+//                            shelf.index = Int64($0.shelfs?.count ?? 0)
+//                        }
+//                        shelf.bookshelf = $0
+//                        try? viewContext.save()
+//                    }
+//                ), label: Text("Scaffale"), content: {
+//                    ForEach(Array(bookshelfs)) { bookshelf in
+//                        Text(bookshelf.name!).tag(bookshelf)
+//                    }
+//                })
+//            }
+//            .padding(.top, -24.0)
+//            .frame(height: 55.0)
+//
+//        }
         
         List {
             ForEach(books) { book in
-                if (isEditable) {
-                    SmallerBookView(book: book)
-                } else {
+//                if (isEditable) {
+//                    SmallerBookView(book: book)
+//                } else {
                     NavigationLink(destination: BookView(viewModel: viewModel, book: book).environment(\.managedObjectContext, viewContext)) {
                         HStack {
                             SmallBookView(book: book).frame(width: 100, height: 150)
@@ -107,41 +108,73 @@ struct ShelfView: View {
                             }.font(.caption).padding(.horizontal, 10)
                         }
                     }
-                }
+                    .swipeActions(allowsFullSwipe: false) {
+                        Button(role: .destructive) {
+                            viewModel.delete(book, from: books, viewContext: viewContext)
+                            showAlert = true
+                        } label: {
+                            Label("Elimina", systemImage: "trash.fill")
+                        }
+                    }
+                    .swipeActions(edge: .leading, allowsFullSwipe: true) {
+                        Button {
+                            book.favourite.toggle()
+                            try? viewContext.save()
+                        } label: {
+                            Label("Preferito", systemImage: book.favourite ? "star.fill" : "star")
+                        }.tint(.yellow)
+                    }
+//                }
             }
-            .onDelete(perform: { indexSet in
-                itemToRemove = books[indexSet.first!]
-                if let itemToRemove = itemToRemove {
-                    viewModel.delete(itemToRemove, from: books, viewContext: viewContext)
-                }
-            })
+//            .onDelete(perform: { indexSet in
+//                itemToRemove = books[indexSet.first!]
+//                if let itemToRemove = itemToRemove {
+//                    viewModel.delete(itemToRemove, from: books, viewContext: viewContext)
+//                }
+//            })
             .onMove(perform: move)
         }
-        .environment(\.editMode, .constant(isEditable ? .active : .inactive))
-        .navigationTitle(!isEditable ? shelf.name ?? "Nome Libreria" : "")
-        .navigationBarTitleDisplayMode(isEditable ? .inline : .automatic)
+        .textFieldAlert(isPresented: $isEditable, title: "Modifica Scaffale", text: shelf.name!, accept: "Salva", action: { name in
+            if name != nil && name != "" {
+                shelf.name = name!
+                try? viewContext.save()
+            }
+        })
+        .alert("Attenzione", isPresented: $showAlert) {
+            Button(role: .destructive) {
+                try? viewContext.save()
+            } label: {
+                Text("Conferma")
+            }
+            Button("Annulla", role: .cancel) { viewContext.rollback() }
+        } message: {
+            Text("Il libro verrà eliminato")
+        }
+//        .environment(\.editMode, .constant(isEditable ? .active : .inactive))
+        .navigationTitle(shelf.name!)
+//        .navigationBarTitleDisplayMode(isEditable ? .inline : .automatic)
         .toolbar {
             ToolbarItem(placement: .primaryAction) {
-                if (!isEditable) {
+//                if (!isEditable) {
                     Menu {
                         /*debug Button(action: { viewModel.fix(books, viewContext: viewContext) }, label: { Text("FIX") }) debug*/
                         Button(
-                            action: { isEditable.toggle() },
-                            label:  { Image(systemName: "square.and.pencil"); Text("Modifica Scaffale") }
+                            action: { showAddBook = true },
+                            label:  { Image(systemName: "plus"); Text("Aggiungi Libro") }
                         )
                         Button(
                             action: { showMoveBooks.toggle() },
                             label:  { Image(systemName: "checkmark.circle"); Text("Muovi libri") }
                         ).disabled(books.isEmpty)
                         Button(
-                            action: { showAddBook = true },
-                            label:  { Image(systemName: "plus"); Text("Aggiungi Libro") }
+                            action: { isEditable.toggle() },
+                            label:  { Image(systemName: "square.and.pencil"); Text("Modifica Scaffale") }
                         )
                     }
                     label: { Image(systemName: "ellipsis").imageScale(.large).frame(width: 40, height: 60) }
-                } else {
-                    Button(action: { isEditable.toggle() }, label: { Text("Fatto") })
-                }
+//                } else {
+//                    Button(action: { isEditable.toggle() }, label: { Text("Fatto") })
+//                }
             }
         }
         .sheet(

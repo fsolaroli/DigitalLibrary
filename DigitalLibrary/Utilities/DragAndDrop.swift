@@ -31,3 +31,22 @@ struct MyDropDelegate<A: Equatable> : DropDelegate {
         }
     }
 }
+
+// Insert in struct variables
+//    @State var draggedItem : Bookshelf?
+
+
+// Append to NavigationLink (or element of List)
+//                    .onDrag({
+//                        self.draggedItem = bookshelf
+//                        return NSItemProvider(item: nil, typeIdentifier: bookshelf.name ?? "")
+//                    })
+//                    .onDrop(of: [UTType.text], delegate:
+//                        MyDropDelegate<Bookshelf>(item: bookshelf, items:
+//                            Binding<[Bookshelf]> (
+//                                get: { return Array(bookshelfs) },
+//                                set: { _ in }
+//                            )
+//                            , draggedItem: $draggedItem
+//                        )
+//                    )

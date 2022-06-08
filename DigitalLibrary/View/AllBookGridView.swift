@@ -124,6 +124,8 @@ struct AllBookGridView: View {
                         }
                     }
                 }
+                // MARK: iOS16
+                //.scrollDismissesKeyboard(.interactively)
             
             }
             
@@ -152,9 +154,9 @@ struct AllBookGridView: View {
                         action: { withAnimation { showFavourites.toggle() }},
                         label: {
                             if (showFavourites) {
-                                Image(systemName: "heart.fill").foregroundColor(.red).imageScale(.large)
+                                Image(systemName: "star.fill").foregroundColor(.yellow).imageScale(.large)
                             } else {
-                                Image(systemName: "heart").imageScale(.large)
+                                Image(systemName: "star").imageScale(.large)
                             }
                         }
                     )

@@ -34,9 +34,9 @@ struct SmallBookView: View {
                 VStack {
                     HStack {
                         Spacer()
-                        Image(systemName: "heart.fill")
-                            .overlay(Image(systemName: "heart").foregroundColor(Color(UIColor.label)).font(.title2))
-                            .foregroundColor(Color(UIColor.red)).padding(.horizontal, 5).padding(.top, 3).font(.title2)
+                        Image(systemName: "star.fill")
+                            .overlay(Image(systemName: "star").foregroundColor(Color(UIColor.black)).font(.title))
+                            .foregroundColor(Color(UIColor.yellow)).padding(.horizontal, 5).padding(.top, 5).font(.title2)
                     }
                     Spacer()
                 }
