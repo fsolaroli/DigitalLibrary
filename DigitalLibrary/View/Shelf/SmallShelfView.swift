@@ -55,7 +55,7 @@ struct SmallShelfView: View {
 //                                let width = CGFloat(150 * cos(angle * Double.pi / 180))
 //                                let _ = print(widths[i])
                                 NavigationLink(destination: BookView(viewModel: viewModel, book: book).environment(\.managedObjectContext, viewContext)) {
-                                    SmallBookView(book: book).frame(width: 150)
+                                    BookCoverView(book: book).frame(width: 150)
                                 }
 //                                .frame(width: width, height: 200)
                                 .frame(height: 200)

@@ -175,8 +175,6 @@ class ManageData: ObservableObject {
         }
         
         viewContext.delete(bookshelf)
-        
-//        try? viewContext.save()
     }
     
     func move(_ array: Array<Shelf>, from source: Int, to destination: Int, viewContext: NSManagedObjectContext) {
@@ -205,8 +203,6 @@ class ManageData: ObservableObject {
         }
         
         viewContext.delete(shelf)
-        
-//        try? viewContext.save()
     }
     
     func move(_ array: Array<Book>, from source: Int, to destination: Int, viewContext: NSManagedObjectContext) {
@@ -260,8 +256,6 @@ class ManageData: ObservableObject {
         }
         
         viewContext.delete(book)
-        
-//        try? viewContext.save()
     }
 
     

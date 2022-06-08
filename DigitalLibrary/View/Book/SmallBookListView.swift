@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct SmallerBookView: View {
+struct SmallBookListView: View {
     
     @State var book: Book
     

@@ -10,12 +10,10 @@ import SwiftUI
 struct BookView: View {
     
     @ObservedObject var viewModel: ManageData
+    @ObservedObject var book: Book
     
     @Environment(\.managedObjectContext) private var viewContext
-    
     @Environment(\.presentationMode) var presentationMode
-    
-    @ObservedObject var book: Book
     
     @State var showAlert = false;
     @State var showEditBook = false
@@ -142,7 +140,7 @@ struct BookView: View {
             }
             Button("Annulla", role: .cancel) { }
         } message: {
-            Text("Confermare la cancellazione del libro")
+            Text("Il libro verrà eliminato")
         }
     }
 }

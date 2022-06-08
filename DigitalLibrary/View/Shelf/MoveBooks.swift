@@ -72,7 +72,7 @@ struct MoveBooks: View {
 //                }.padding(.top, 10)
                 
                 List(books, id: \.self, selection: $selectedBooks) { book in
-                    SmallerBookView(book: book)
+                    SmallBookListView(book: book)
                 }
                 .environment(\.editMode, .constant(.active))
                 

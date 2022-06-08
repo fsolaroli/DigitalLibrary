@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct SmallBookView: View {
+struct BookCoverView: View {
     
     @ObservedObject var book: Book
     

@@ -74,34 +74,9 @@ struct AllBookGridView: View {
     var body: some View {
         NavigationView {
             VStack {
-//                HStack {
-//                    ZStack {
-//                        TextField("Filtra libri", text: Binding(get: { filter }, set: { newValue in withAnimation { filter = newValue } }))
-//                            .textFieldStyle(RoundedBorderTextFieldStyle()).padding(.horizontal, 3)
-//                        HStack {
-//                            Spacer()
-//                            Button(
-//                                action: { withAnimation { filter = "" }},
-//                                label: { Image(systemName: "xmark").frame(width: 50, height: 50, alignment: .center) }
-//                            ).foregroundColor(Color(UIColor.label))
-//                        }
-//                    }
-//                    Spacer()
-//                    Button(
-//                        action: { withAnimation { showFavourites.toggle() }},
-//                        label: {
-//                            if (showFavourites) {
-//                                Image(systemName: "heart.fill").foregroundColor(.red)
-//                            } else {
-//                                Image(systemName: "heart")
-//                            }
-//                        }
-//                    ).font(.title2)
-//                }.padding(.bottom, 1).padding(.horizontal, 5).padding(.top, 10)
-//                Divider()
                 ScrollView(.vertical) {
                     if (groupedBooks.isEmpty && !books.isEmpty) {
-                        Text("Nessun libro corrisponde ai criteri della ricerca")
+                        Text("Nessun libro corrisponde ai criteri della ricerca").padding(.top, 10)
                     }
                     withAnimation {
                         VStack {
@@ -114,7 +89,7 @@ struct AllBookGridView: View {
                                         LazyVGrid(columns: [GridItem(.adaptive(minimum: 100))], spacing: 10) {
                                             ForEach(books) { book in
                                                 NavigationLink(destination: BookView(viewModel: viewModel, book: book)) {
-                                                    SmallBookView(book: book)
+                                                    BookCoverView(book: book)
                                                 }
                                             }
                                         }
