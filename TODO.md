@@ -1,7 +1,5 @@
 # TODO
 
-- Correct bug on TabView (menù background disappears) !!!!
-
 - Correct bug on number of books in libraries
 
 - Look how to create code that only runs on development / debug
@@ -12,11 +10,13 @@
 
 - Add read flag to books, with visualisation on the cover
 
-- Add reading flag, with page progress ???
+- Add reading flag, with page progress
 
 - Add iCloud backup (need apple developer account (paid))
     - https://developer.apple.com/documentation/coredata/mirroring_a_core_data_store_with_cloudkit/setting_up_core_data_with_cloudkit
     - https://developer.apple.com/documentation/coredata/mirroring_a_core_data_store_with_cloudkit
+
+- Add option to insert information from cover ocs (Google Books API is unreliable)
 
 
 # DONE
