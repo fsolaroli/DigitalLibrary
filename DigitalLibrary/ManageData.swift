@@ -12,6 +12,7 @@ import CoreData
 class ManageData: ObservableObject {
     
     let isbnBookAPI = "https://www.googleapis.com/books/v1/volumes?q=isbn:"    
+    let apiKey = Bundle.main.object(forInfoDictionaryKey: "GoogleBooksAPIKey") as? String ?? ""
     
     @Published var inputBook = InputBook()
     @Published var newInputBook = InputBook()
@@ -68,8 +69,11 @@ class ManageData: ObservableObject {
         notFound = false
         newInputBook = InputBook()
         newInputBook.ISBN = isbn
-        let session = URLSession(configuration: .default)
-        if let url = URL(string: isbnBookAPI + isbn) {
+        let config = URLSessionConfiguration.ephemeral
+        config.urlCache = nil
+        let session = URLSession(configuration: config)
+        if let url = URL(string: isbnBookAPI + isbn + "&key=" + apiKey) {
+            print(url)
             let task = session.dataTask(with: url) { (data: Data?, response, error) in
                 DispatchQueue.main.async {
                     if let bookData = data {
