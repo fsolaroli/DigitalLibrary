@@ -97,6 +97,7 @@ struct AddBook: View {
                         TextField("Numero di pagine", text: $viewModel.inputBook.pageNumber).keyboardType(.numberPad)
                     })
                 }
+                .accessibilityIdentifier("NewBookForm")
                 Divider().padding(.bottom, 5)
                 Button(
                     action: { showBarcodeScanner = true },

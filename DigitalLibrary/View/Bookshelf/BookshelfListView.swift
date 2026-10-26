@@ -36,6 +36,7 @@ struct BookshelfListView: View {
                             }
                         }
                     }
+                    .accessibilityIdentifier(bookshelf.name ?? "") // MARK: Important
                     .swipeActions(allowsFullSwipe: false) {
                         Button(role: .destructive) {
                             viewModel.delete(bookshelf, from: Array(bookshelfs), viewContext: viewContext)
@@ -51,6 +52,7 @@ struct BookshelfListView: View {
                 }
                 .onMove(perform: move)
             }
+            .accessibilityIdentifier("bookshelfsList")
             .navigationTitle("Librerie")
             .listStyle(PlainListStyle())
             .toolbar {

@@ -27,6 +27,30 @@ class ManageData: ObservableObject {
         }
     }
     
+    func resetCoreData(viewContext: NSManagedObjectContext) {
+        deleteAllData("Book", viewContext: viewContext)
+        deleteAllData("Bookshelf", viewContext: viewContext)
+        deleteAllData("Shelf", viewContext: viewContext)
+        deleteAllData("Borrowed", viewContext: viewContext)
+        let newBookshelf = addBookshelf(name: "La mia prima libreria", index: 0, viewContext: viewContext)
+        inputBook.title = "Primo Libro"
+        addBook(shelf: newBookshelf.shelfs![0] as! Shelf, index: 0, viewContext: viewContext)
+    }
+    
+    func deleteAllData(_ entity:String, viewContext: NSManagedObjectContext) {
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: entity)
+        fetchRequest.returnsObjectsAsFaults = false
+        do {
+            let results = try viewContext.fetch(fetchRequest)
+            for object in results {
+                guard let objectData = object as? NSManagedObject else {continue}
+                viewContext.delete(objectData)
+            }
+        } catch let error {
+            print("Detele all data in \(entity) error :", error)
+        }
+    }
+    
     func numberOfBooks(in bookshelf: Bookshelf) -> String {
         var numberOfBooks = 0
         if let shelfs = bookshelf.shelfs {

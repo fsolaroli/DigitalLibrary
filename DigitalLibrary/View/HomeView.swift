@@ -23,5 +23,9 @@ struct HomeView: View {
                 .tabItem { Label("Libri", systemImage: "square.grid.2x2.fill") }
                 .environment(\.managedObjectContext, viewContext)
         }
+//        Button(
+//            action: { withAnimation { viewModel.resetCoreData(viewContext: viewContext) }},
+//            label: { Text("RESET") }
+//        )
     }
 }

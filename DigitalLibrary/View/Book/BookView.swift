@@ -47,7 +47,8 @@ struct BookView: View {
                             Image(systemName: "star")
                         }
                     }
-                ).font(.title)
+                )
+                .font(.title)
             }.padding(.top).padding(.horizontal)
             Text(book.title ?? "").font(.largeTitle).fontWeight(.bold).padding()
             Spacer()
@@ -124,6 +125,7 @@ struct BookView: View {
                  }
             ).padding(40)
         }
+        .accessibilityIdentifier("BookView")
         .onDisappear(perform: { try? viewContext.save() })
         .navigationBarTitleDisplayMode(.inline)
         .navigationBarItems(trailing: Button(action: { showEditBook = true }, label: { Text("Modifica") }))

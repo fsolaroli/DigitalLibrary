@@ -57,6 +57,7 @@ struct SmallShelfView: View {
                                 NavigationLink(destination: BookView(viewModel: viewModel, book: book).environment(\.managedObjectContext, viewContext)) {
                                     BookCoverView(book: book).frame(width: 150)
                                 }
+                                .accessibilityIdentifier(book.title ?? "book")
 //                                .frame(width: width, height: 200)
                                 .frame(height: 200)
                                 .rotation3DEffect(.degrees(angle), axis: (x: 0, y: 1, z: 0))
@@ -68,6 +69,7 @@ struct SmallShelfView: View {
                     }
                     .padding(.horizontal, (fullView.size.width - 150) / 2)
                 }
+                .accessibilityIdentifier("booksScroll")
 //                .edgesIgnoringSafeArea(.all)
 //                .frame(height: 205)
                 // TODO: se hai voglia, in futuro, fare il cover flow decentemente

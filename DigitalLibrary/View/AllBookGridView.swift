@@ -91,9 +91,11 @@ struct AllBookGridView: View {
                                                 NavigationLink(destination: BookView(viewModel: viewModel, book: book)) {
                                                     BookCoverView(book: book)
                                                 }
+                                                .accessibilityIdentifier(book.title ?? "book")
                                             }
                                         }
-                                    }.padding(.bottom, 20)
+                                    }
+                                    .padding(.bottom, 20)
                                 }
                             }
                         }
@@ -124,7 +126,8 @@ struct AllBookGridView: View {
                             )
                         },
                         label: { order.label().imageScale(.large) }
-                    )
+                        
+                    ).accessibilityIdentifier("filtering")
                     Button(
                         action: { withAnimation { showFavourites.toggle() }},
                         label: {
@@ -134,7 +137,7 @@ struct AllBookGridView: View {
                                 Image(systemName: "star").imageScale(.large)
                             }
                         }
-                    )
+                    ).accessibilityIdentifier("favouriteFilter")
                 }
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button(action: { showAddBook = true }, label: { Image(systemName: "plus").imageScale(.large) })

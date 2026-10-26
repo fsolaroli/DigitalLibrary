@@ -22,8 +22,9 @@ struct AddBookshelf: View {
             Form {
                 Section {
                     TextField("Nome", text: $name)
+                    Button("Test") { }
                 }
-            }
+            }.accessibilityIdentifier("AddBookshelfForm")
             .navigationTitle("Nuova Libreria")
             .navigationBarItems(
                 leading: Button(action: { presentationMode.wrappedValue.dismiss() }, label: { Text("Annulla") }),

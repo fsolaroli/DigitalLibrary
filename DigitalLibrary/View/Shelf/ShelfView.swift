@@ -36,6 +36,7 @@ struct ShelfView: View {
                 NavigationLink(destination: BookView(viewModel: viewModel, book: book).environment(\.managedObjectContext, viewContext)) {
                     BookListView(book: book)
                 }
+                .accessibilityIdentifier(book.title ?? "book")
                 .swipeActions(allowsFullSwipe: false) {
                     Button(role: .destructive) {
                         viewModel.delete(book, from: books, viewContext: viewContext)
@@ -55,7 +56,8 @@ struct ShelfView: View {
             }
             .onMove(perform: move)
         }
-        .textFieldAlert(isPresented: $isEditable, title: "Modifica Scaffale", text: shelf.name!, accept: "Salva", action: { name in
+        .accessibilityIdentifier("booksList")
+        .textFieldAlert(isPresented: $isEditable, title: "Modifica Scaffale", text: shelf.name ?? "", accept: "Salva", action: { name in
             if name != nil && name != "" {
                 shelf.name = name!
                 try? viewContext.save()
@@ -71,11 +73,10 @@ struct ShelfView: View {
         } message: {
             Text("Il libro verrà eliminato")
         }
-        .navigationTitle(shelf.name!)
+        .navigationTitle(shelf.name ?? "")
         .toolbar {
             ToolbarItem(placement: .primaryAction) {
                 Menu {
-                    /*debug* Button(action: { viewModel.fix(books, viewContext: viewContext) }, label: { Text("FIX") }) *debug*/
                     Button(
                         action: { showAddBook = true },
                         label:  { Image(systemName: "plus"); Text("Aggiungi Libro") }
@@ -90,6 +91,7 @@ struct ShelfView: View {
                     )
                 }
                 label: { Image(systemName: "ellipsis").imageScale(.large).frame(width: 40, height: 60) }
+                .accessibilityIdentifier("ShelfMenu")
             }
         }
         .sheet(

@@ -38,6 +38,7 @@ struct BookshelfView: View {
         List {
             ForEach(shelfs) { shelf in
                 SmallShelfView(viewModel: viewModel, shelf: shelf)
+                .accessibilityIdentifier(shelf.name ?? "shelf")
                 .swipeActions(allowsFullSwipe: false) {
                     Button(role: .destructive) {
                         viewModel.delete(shelf, from: shelfs, viewContext: viewContext)
@@ -53,12 +54,13 @@ struct BookshelfView: View {
             }
             .onMove(perform: move)
         }
+        .accessibilityIdentifier("shelfsList")
         .textFieldAlert(isPresented: $showAddShelfView, title: "Nuovo Scaffale", accept: "Aggiungi", action: { name in
             if name != nil && name != "" {
                 viewModel.addShelf(name: name!, index: bookshelf.shelfs?.count ?? 0, bookshelf: bookshelf, viewContext: viewContext)
             }
         })
-        .textFieldAlert(isPresented: $isEditable, title: "Modifica Libreria", text: bookshelf.name!, accept: "Salva", action: { name in
+        .textFieldAlert(isPresented: $isEditable, title: "Modifica Libreria", text: bookshelf.name ?? "", accept: "Salva", action: { name in
             if name != nil && name != "" {
                 bookshelf.name = name!
                 try? viewContext.save()
@@ -74,7 +76,7 @@ struct BookshelfView: View {
         } message: {
             Text("Cancellando lo scaffale si cancelleranno i libri al suo interno")
         }
-        .navigationTitle(bookshelf.name!)
+        .navigationTitle(bookshelf.name ?? "")
         .listStyle(PlainListStyle())
         .toolbar {
             ToolbarItem(placement: .primaryAction) {
